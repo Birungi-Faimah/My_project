@@ -1,0 +1,89 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Sales Dashboard
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Sales Agent's Dashboard
+        nav.sidebar-nav
+          ul
+            li
+              a(href="/salesAgentDash")
+                i.fas.fa-chart-bar
+                |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header
+          h1 Sales Overview
+        section.dashboard-cards
+          .card
+            h2 Total Sales
+            p#totalSales #{totalSales ? totalSales.toLocaleString('en-UG') : 0} UGX
+          .card
+            h2 Number of Sales
+            p#numSales #{numSales}
+        section.recent-sales
+          h2 Recent Sales
+          table
+            thead
+              tr
+                th Produce
+                th Amount Paid (UGX)
+                th Buyer
+                th Sales Agent
+                th Date
+                th Time
+            tbody#recentSalesTable
+              if sales && sales.length
+                each sale in sales.slice(0, 10)
+                  tr
+                    td #{sale.produceName}
+                    td #{sale.amountPaid ? sale.amountPaid.toLocaleString('en-UG') : ''}
+                    td #{sale.buyerName}
+                    td #{sale.slaesAgentName}
+                    td #{sale.saleDate ? sale.saleDate.toLocaleDateString() : ''}
+                    td #{sale.saleTime}
+              else
+                tr
+                  td(colspan="6") No sales found.
+    
+    script(src="/js/salesdashboard.js")

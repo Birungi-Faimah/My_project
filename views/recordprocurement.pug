@@ -1,0 +1,189 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title record procurement
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    
+    style.
+      .notification-popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background-color:rgb(90, 156, 152) ;
+        color: white;
+        border-radius: 6px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(150%);
+        transition: transform 0.3s ease-out;
+      }
+      .notification-popup.show {
+        transform: translateX(0);
+      }
+      .notification-popup i {
+        font-size: 1.2rem;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 1.5rem;
+        color: #666;
+      }
+      .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+        color: #ddd;
+      }
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Procurement
+        nav.sidebar-nav
+          ul
+            //- li
+            //-   a(href="/manager")
+            //-     i.fas.fa-chart-bar
+            //-     |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header
+          h1 Procurement Records
+        .table-container
+          .table-header
+            h2 record procurement
+            a.btn-add(href="/addproduce")
+              i.fas.fa-plus
+              span Add Produce
+          
+          .search-container
+            .search-box
+              i.fas.fa-search.search-icon
+              input.search-input(type="text", placeholder="Search records...", id="searchInput")
+              i.fas.fa-times.clear-search(id="clearSearch")
+          
+          .table-wrapper
+            table
+              thead
+                tr
+                  th Produce Name
+                  th Produce Type
+                  th Date
+                  th Contact
+                  th Time 
+                  th Tonnage(kgs)
+                  th Cost
+                  th selling Price
+                  th Daeler Name 
+                  th Dealer Contact
+                  th Branch 
+                  th Actions
+              tbody#creditTableBody
+                if produces && produces.length
+                  each produce in produces
+                    tr
+                      td #{produce.produceName}
+                      td #{produce.produceType}
+                      td #{produce.producedateandtime ? produce.producedateandtime.toLocaleDateString() : ''}
+                      td #{produce.contact}
+                      td #{produce.producedateandtime ? produce.producedateandtime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                      td #{produce.tonnage}
+                      td #{produce.producecost}
+                      td #{produce.sellingprice}
+                      td #{produce.dealerName}
+                      td #{produce.contact}
+                      td #{produce.branch}
+                      td.actions
+                        a.btn.btn-edit(href=`/editProduce/${produce._id}`)
+                          i.fas.fa-edit
+                        a.btn.btn-delete(href=`/deleteProduce/${produce._id}`)
+                          i.fas.fa-trash-alt
+                else
+                  tr.empty-row
+                    td(colspan="13")
+                      .empty-state
+                        i.fas.fa-database
+                        p No records found
+
+    footer.footer
+      p © 2025 Karibu groceries limited. All rights reserved.
+      p Developed by Birungi Faimah Khan
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const successPopup = document.getElementById('successPopup');
+        if (successPopup) {
+          setTimeout(() => successPopup.classList.add('show'), 100);
+          setTimeout(() => successPopup.classList.remove('show'), 5000);
+          successPopup.addEventListener('click', () => successPopup.classList.remove('show'));
+        }
+        
+        const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
+        
+        if (searchInput && clearSearch) {
+          searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#recordprocurementableBody tr:not(.empty-row)');
+            let hasResults = false;
+            
+            rows.forEach(row => {
+              const text = row.textContent.toLowerCase();
+              if (text.includes(searchTerm)) {
+                row.style.display = '';
+                hasResults = true;
+              } else {
+                row.style.display = 'none';
+              }
+            });
+            
+            clearSearch.style.display = searchTerm.length > 0 ? 'block' : 'none';
+            document.querySelector('.empty-row').style.display = hasResults ? 'none' : '';
+          });
+          
+          clearSearch.addEventListener('click', function() {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input'));
+            this.style.display = 'none';
+          });
+        }
+      });

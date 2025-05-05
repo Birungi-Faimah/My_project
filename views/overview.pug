@@ -1,0 +1,46 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Director&apos;s Sales Overview
+  link(rel='stylesheet' href='/css/overview.css')
+.dashboard-container
+  header.dashboard-header
+    .logo-container
+      img(src='/images/hand.jpg' alt='Karibu Groceries Logo')
+    h1 Overall Sales Overview
+    p
+      | As of: 
+      span#last-updated 17:23 22/04/2025
+  section.branch-overview
+    h2 Maganjo
+    .metrics-grid
+      .metric-card
+        h3 Total Sales (Year to Date)
+        p#branch-a-total-sales.metric-value UGX 8,560,000
+      .metric-card
+        h3 Month-Over-Month Growth (Mar vs Apr)
+        p#branch-a-mom-growth.metric-value +3.2%
+      .metric-card
+        h3 Average Order Value (YTD)
+        p#branch-a-aov.metric-value UGX 43,200
+  section.branch-overview
+    h2 Matuga
+    .metrics-grid
+      .metric-card
+        h3 Total Sales (Year to Date)
+        p#branch-b-total-sales.metric-value UGX 7,125,000
+      .metric-card
+        h3 Month-Over-Month Growth (Mar vs Apr)
+        p#branch-b-mom-growth.metric-value -1.5%
+      .metric-card
+        h3 Average Order Value (YTD)
+        p#branch-b-aov.metric-value UGX 39,800
+footer.dashboard-footer
+  .footer-info
+    p &copy; 2025 Karibu Groceries Limited. All rights reserved.
+    p Developed by Birungi Faimah Khan
+  .contact-info
+    p Email: info@karibugroceries.co.ug
+    p Contact: +256 755826842
+script(src='/js/overview.js')

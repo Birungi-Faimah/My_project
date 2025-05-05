@@ -1,0 +1,63 @@
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.form-group {
+  margin-bottom: 18px;
+}
+label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: #1a4340;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background: #f8f8f8;
+  margin-bottom: 2px;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #1a4340;
+  background: #f0f8f7;
+}
+button[type="submit"] {
+  background: #1a4340;
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button[type="submit"]:hover {
+  background: #256026;
+}
+.error-message {
+  color: #e74c3c;
+  font-size: 0.95em;
+  margin-top: 3px;
+}
+.success-message {
+  color: #2ecc71;
+  font-size: 1em;
+  margin-top: 8px;
+  font-weight: bold;
+} 

@@ -1,0 +1,94 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Manager Dashboard
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Mr Orban's Dashboard
+        nav.sidebar-nav
+          ul
+            li
+              a(href="/dashboard")
+                i.fas.fa-chart-bar
+                |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header
+          h1 Mr Orban's Dashboard
+        section.dashboard-cards
+          .card
+            h2 Total Procured
+            p#totalProcured #{totalProcured ? totalProcured.toLocaleString('en-UG') : 0} kgs
+          .card
+            h2 Number of Procurements
+            p#numProcurements #{produces && produces.length ? produces.length : 0}
+        section.recent-procurements
+          h2 Recent Procurements
+          table
+            thead
+              tr
+                th Produce Name
+                th Type
+                th Date
+                th Tonnage (kgs)
+                th Cost (UGX)
+                th Dealer Name
+                th Contact
+                th Branch
+            tbody#recentProcurementsTable
+              if produces && produces.length
+                each produce in produces.slice(0, 10)
+                  tr
+                    td #{produce.produceName}
+                    td #{produce.produceType}
+                    td #{produce.producedateandtime ? produce.producedateandtime.toLocaleDateString() : ''}
+                    td #{produce.tonnage}
+                    td #{produce.producecost}
+                    td #{produce.dealerName}
+                    td #{produce.contact}
+                    td #{produce.branch}
+              else
+                tr
+                  td(colspan="8") No procurements found.
+    footer.footer
+      p © 2025 Karibu groceries limited. All rights reserved.
+      p Developed by Birungi Faimah Khan 

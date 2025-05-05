@@ -1,0 +1,141 @@
+meta(charset="UTF-8")
+meta(name="viewport", content="width=device-width, initial-scale=1")
+title Trusted Buyer Credit Form
+link(rel="stylesheet", href="/css/dashboard.css")
+link(rel="stylesheet", href="/css/forms.css")
+link(rel="stylesheet", href="/css/tables.css")
+link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+body
+  .dashboard-container
+    aside.sidebar
+      .logo-container
+        .logo-circle
+          img(src="/images/hand.jpg", alt="Company Logo")
+        h2.dashboard-title Credit
+      nav.sidebar-nav
+        ul
+          //- li
+          //-   a(href="/manager")
+          //-     i.fas.fa-chart-bar
+          //-     |  Dashboard
+          li
+            a(href="/addproduce")
+              i.fas.fa-chart-bar
+              |  Add Produce
+          li
+            a(href="/addCredit")
+              i.fas.fa-chart-bar
+              |  Add Credit
+          li
+            a(href="/salesTable")
+              i.fas.fa-chart-bar
+              |  Sales Table
+          li
+            a(href="/addproduce")
+              i.fas.fa-chart-bar
+              |  Produce Table                
+          li
+            a(href="/recordprocurement")
+              i.fas.fa-table
+              |  Procurement List
+          li
+            a(href="/creditTable")
+              i.fas.fa-table
+              |  Credit Table    
+          li
+            a(href="/land")
+              i.fas.fa-sign-out-alt
+              |  Logout
+    main.main-content
+      .container
+        //- .logo
+        //-   img(src="/images/hand.jpg", alt="Company Logo")
+        h2 #{credit ? 'Edit Credit Entry' : 'Trusted Buyer Credit Form'}
+        
+        if success
+          .success-message
+            i.fas.fa-check-circle
+            | Successfully submitted!
+        
+        form#creditForm(action=credit ? `/editCredit/${credit._id}` : '/addCredit', method="post")
+          .form-grid
+            .form-group
+              label(for="NameofBuyer") Buyer Name:
+              input(type="text", name="NameofBuyer", id="NameofBuyer", value=credit ? credit.NameofBuyer : '', required)
+            
+            .form-group
+              label(for="NIN") National ID:
+              input(type="text", name="NIN", id="NIN", value=credit ? credit.NIN : '', required)
+            
+            .form-group
+              label(for="location") Location:
+              input(type="text", name="location", id="location", value=credit ? credit.location : '', required)
+            
+            .form-group
+              label(for="contant") Phone:
+              input(type="tel", name="contant", id="contant", value=credit ? credit.contant : '', required)
+            
+            .form-group
+              label(for="AmountDue") Amount (UGX):
+              input(type="number", name="AmountDue", id="AmountDue", value=credit ? credit.AmountDue : '', required)
+            
+            .form-group
+              label(for="agentName") Agent:
+              input(type="text", name="agentName", id="agentName", value=credit ? credit.agentName : '', required)
+            
+            .form-group
+              label(for="DueDate") Due Date:
+              input(type="date", name="DueDate", id="DueDate", value=credit ? credit.DueDate.toISOString().split('T')[0] : '', required)
+            
+            .form-group
+              label(for="produceName") Produce:
+              input(type="text", name="produceName", id="produceName", value=credit ? credit.produceName : '', required)
+            
+            .form-group
+              label(for="TypeofProduce") Type:
+              input(type="text", name="TypeofProduce", id="TypeofProduce", value=credit ? credit.TypeofProduce : '', required)
+            
+            .form-group
+              label(for="Tonnage") Tonnage:
+              input(type="number", name="Tonnage", id="Tonnage", value=credit ? credit.Tonnage : '', required)
+            
+            .form-group
+              label(for="cost") Price (UGX):
+              input(type="number", name="cost", id="cost", value=credit ? credit.cost : '', required)
+            
+            .form-group
+              label(for="DateofDispatch") Dispatch:
+              input(type="date", name="DateofDispatch", id="DateofDispatch", value=credit ? credit.DateofDispatch.toISOString().split('T')[0] : '', required)
+          
+          .button-container
+            button(type="submit", id="submitBtn")
+              i.fas.fa-paper-plane
+              | #{credit ? 'Update' : 'Submit'}
+      //- footer.footer
+      //-   p © 2025 Karibu groceries limited. All rights reserved.
+      //-   p Developed by Birungi Faimah Khan
+      script.
+        document.addEventListener('DOMContentLoaded', function() {
+          const form = document.getElementById('creditForm');
+          const submitBtn = document.getElementById('submitBtn');
+          
+          // Form validation
+          form.addEventListener('input', function() {
+            const allFilled = Array.from(form.elements).every(el => {
+              return !el.required || (el.type !== 'submit' && el.value.trim() !== '');
+            });
+            
+            if (allFilled) {
+              submitBtn.style.backgroundColor = '#2ecc71';
+            } else {
+              submitBtn.style.backgroundColor = '#95a5a6';
+            }
+          });
+          
+          form.addEventListener('submit', function(e) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+          });
+        });

@@ -1,0 +1,100 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width,initial-scale=1")
+    title Maganjo Procurement Dashboard
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Procurement
+        nav.sidebar-nav
+          ul
+            //- li
+            //-   a(href="/manager")
+            //-     i.fas.fa-chart-bar
+            //-     |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header
+          h1 Maganjo Procurement Dashboard
+        section.dashboard-content
+          h2 Produce Procurement Records
+          form#procurementForm(action='/addproduce', method="post", onsubmit="handleFormSubmit(event)")
+            .form-group
+              label(for="produceName") Name of Produce:
+              input#produceName(type="text", name="produceName")
+              .error-message#produceNameError
+            .form-group
+              label(for="produceType") Type of Produce:
+              input#produceType(type="text", name="produceType")
+              .error-message#produceTypeError
+            .form-group
+              label(for="procurementDate") Date of Procurement:
+              input#procurementDate(type="date", name="procurementDate")
+              .error-message#procurementDateError
+            .form-group
+              label(for="procurementTime") Time of Produce Entry:
+              input#procurementTime(type="time", name="procurementTime")
+              .error-message#procurementTimeError
+            .form-group
+              label(for="tonnage") Tonnage in kgs:
+              input#tonnage(type="number", name="tonnage")
+              .error-message#tonnageError
+            .form-group
+              label(for="cost") Cost in UgX:
+              input#cost(type="number", name="cost")
+              .error-message#costError
+            .form-group
+              label(for="dealerName") Name of the Dealer:
+              input#dealerName(type="text", name="dealerName")
+              .error-message#dealerNameError
+            .form-group
+              label(for="dealerContact") Dealer's Contact Number:
+              input#dealerContact(type="tel", name="dealerContact")
+              .error-message#dealerContactError
+            .form-group
+              label(for="sellingPrice") Price to be Sold at:
+              input#sellingPrice(type="number", name="sellingPrice")
+              .error-message#sellingPriceError
+            button(type="submit") Record Procurement
+          #submissionMessage.success-message(style="display:none;")
+          #errorMessage.error-message(style="display:none;")
+          #procurementData
+        script(src="/js/procurement.js")

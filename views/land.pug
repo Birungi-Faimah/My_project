@@ -1,0 +1,49 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css')
+  link(rel='stylesheet' href='/css/land.css')
+  title KARIBU
+header
+  marquee(behavior='left' direction='left') KARIBU GROCERIES LIMITED WEL COMES YOU!
+main.hero
+  .hero-content
+    h1 Welcome to Kabribu Grocery Ltd
+    p Stock Up on Fresh, Affordable Cereals;
+    form(action='/login' method='post')
+      button.login-btn(type='submit') Login
+  .hero-image
+    img(src='/images/crops.jpg' alt='Healthy')
+#signupModal.modal
+  .modal-content
+    span.close-button &times;
+    h2 Sign Up
+    form#signupForm
+      label(for='signup-email') Email:
+      input#signup-email(type='email' name='email')
+      label(for='signup-password') Password:
+      input#signup-password(type='password' name='password' )
+      button(type='submit') Sign Up
+#loginModal.modal
+  .modal-content
+    span.close-button &times;
+    h2 Log In
+    form#loginForm
+      label(for='login-email') Email:
+      input#login-email(type='email' name='email')
+      label(for='login-password') Password:
+      input#login-password(type='password' name='password')
+      button(type='submit') Log In
+footer.footer.bg-dark.text-white.text-center.p-3
+  .container
+    p &copy; 2025 @Kabribu groceries Limited . All rights reserved.
+    p +256 789 123 456
+    p Developed by Birungi Faimah Khan
+    p
+      | Follow us on:
+      a(href='https://www.facebook.com') Facebook
+      a(href='https://www.twitter.com') Twitter
+      a(href='https://www.instagram.com') Instagram
+
+script(src='/js/landing.js')

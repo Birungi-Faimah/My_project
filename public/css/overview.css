@@ -1,0 +1,111 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: olive;
+    color: #070707;
+}
+
+.dashboard-container {
+    max-width: 900px; /* Slightly wider to accommodate logo */
+    margin: 0 auto;
+    background-color: darkkhaki;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+    display: flex;
+    flex-direction: column; /* Stack logo and text vertically initially */
+    align-items: center; /* Center items horizontally */
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.logo-container {
+    margin-bottom: 10px; /* Space between logo and heading */
+}
+
+.logo-container img {
+    max-height: 70px; /* Adjust size as needed */
+    width: auto;
+}
+
+.dashboard-header h1 {
+    margin-top: 0;
+    color: #040404;
+    text-align: center;
+}
+
+.dashboard-header p {
+    color: #070707;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.branch-overview {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: olive;
+}
+
+.branch-overview h2 {
+    color: #080808;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjust min width */
+    gap: 15px;
+}
+
+.metric-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #f7f4f4;
+}
+
+.metric-card h3 {
+    margin-top: 0;
+    color: #070707;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.metric-card .metric-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #080808; /* Example success color for positive growth */
+}
+
+.metric-card .metric-value.negative {
+    color: #dc3545; /* Example danger color for negative growth */
+}
+
+.dashboard-footer {
+    display: flex;
+    justify-content: space-between; /* Distribute info across the footer */
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    color: #050505;
+    font-size: 0.9em;
+}
+
+.footer-info, .contact-info {
+    text-align: left; /* Align text within each section */
+}
+
+.contact-info {
+    text-align: right;
+}

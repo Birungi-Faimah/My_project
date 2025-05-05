@@ -1,0 +1,168 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  color: #222;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  }
+  .dashboard-cards {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 30px 40px;
+    flex: 1 1 250px;
+    min-width: 220px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    color: #1a4340;
+  }
+  .card p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  @media (max-width: 900px) {
+    .dashboard-cards {
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      padding: 20px 10px;
+      min-width: 0;
+    }
+  }
+  
+aside.sidebar {
+  background: #1a4340;
+  color: #fff;
+  width: 230px;
+  min-width: 180px;
+  padding: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+}
+
+.logo-container {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logo-circle {
+  background: #fff;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.logo-circle img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.dashboard-title {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+nav.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0 0;
+  width: 100%;
+}
+
+nav.sidebar-nav li {
+  margin: 8px 0;
+  width: 100%;
+}
+
+nav.sidebar-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.0rem;
+  display: flex;
+  align-items: center;
+  padding: 10px 30px;
+  border-radius: 6px 0 0 6px;
+  transition: background 0.18s;
+}
+
+nav.sidebar-nav a:hover, nav.sidebar-nav a:focus {
+  background: #1a4340;
+}
+
+nav.sidebar-nav i {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 30px 30px 30px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+header h1 {
+  margin-top: 0;
+  color: #1a4340;
+  font-size: 2.1rem;
+  margin-bottom: 30px;
+}
+
+footer.footer {
+  background: #1a4340;
+  color: #fff;
+  text-align: center;
+  padding: 18px 0 10px 0;
+  margin-top: 40px;
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  aside.sidebar {
+    min-width: 120px;
+    width: 120px;
+    padding: 0 0 10px 0;
+  }
+  .logo-circle {
+    width: 45px;
+    height: 45px;
+  }
+  .logo-circle img {
+    width: 32px;
+    height: 32px;
+  }
+  .dashboard-title {
+    font-size: 1rem;
+  }
+  nav.sidebar-nav a {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+} 

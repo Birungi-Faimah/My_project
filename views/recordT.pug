@@ -1,0 +1,75 @@
+//- doctype html
+//- html(lang="en")
+//-   head
+//-     meta(charset="UTF-8")
+//-     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+//-     title Procurement List
+//-     link(rel="stylesheet" href="/css/recordT.css")
+//-     script(src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js")
+//-     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js")
+//-   body
+//-     .dashboard-container
+//-       aside.sidebar
+//-         .logo-container
+//-           .logo-circle
+//-             img(src="/images/hand.jpg", alt="Company Logo")
+//-           h2.dashboard-title Procurement
+//-         nav.sidebar-nav
+//-           ul
+//-             li
+//-               a(href="/manager")
+//-                 i.fas.fa-chart-bar
+//-                 |  Dashboard
+//-             li
+//-               a(href="/recordprocurement")
+//-                 i.fas.fa-table
+//-                 |  Procurement List
+//-             li
+//-               a(href="/land")
+//-                 i.fas.fa-sign-out-alt
+//-                 |  Logout
+//-       main.main-content
+//-         nav
+//-           a(href="/dashboard") Dashboard
+//-           a(href="/addProduce") Add Produce
+//-           a(href="/index") Logout
+//-         main
+//-           h1 Procurement Table - #{branch} Branch
+//-           div
+//-             table
+//-               thead
+//-                 tr
+//-                   th Produce Name
+//-                   th Produce Type
+//-                   th Date
+//-                   th Time
+//-                   th Tonnage (kgs)
+//-                   th Cost (UGX)
+//-                   th Selling Price (UGX)
+//-                   th Dealer Name
+//-                   th Contact
+//-                   th Branch
+//-                   th Actions
+//-               tbody
+//-                 if produces && produces.length
+//-                   each produce in produces
+//-                     tr
+//-                       td #{produce.produceName}
+//-                       td #{produce.produceType}
+//-                       td #{moment(produce.saleDate).format('DD-MM-YYYY')}
+//-                       td #{moment(produce.time, 'HH:mm').format('h:mm A')}
+//-                       td #{produce.tonnage}
+//-                       td #{produce.cost}
+//-                       td #{produce.salePrice}
+//-                       td #{produce.dealerName}
+//-                       td #{produce.contact}
+//-                       td #{produce.branch}
+//-                       td
+//-                         a(href="/editProduce/#{produce._id}") Update
+//-                         form(action="/deleteProduce/#{produce._id}" method="POST")
+//-                           button(type="submit") Delete
+//-                 else
+//-                   tr
+//-                     td(colspan="11") No produce records found.
+//-         script.
+//-           lucide.createIcons()

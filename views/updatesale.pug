@@ -1,0 +1,76 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Update Sale Record
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Sales
+        nav.sidebar-nav
+          ul
+            li
+              a(href="/salesAgentDash")
+                i.fas.fa-chart-bar
+                |  Dashboard
+            li
+              a(href="/salesTable")
+                i.fas.fa-table
+                |  Sales Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header
+          h1 Update Sale Record
+        section.dashboard-content
+          form#updateSaleForm(action=`/updateSale?id=${sale._id}`, method="post")
+            .form-group
+              label(for="produceName") Produce Name:
+              input#produceName(type="text", name="produceName", value=sale.produceName, required)
+              .error-message#produceNameError
+            
+            .form-group
+              label(for="tonnageSold") Tonnage Sold (kgs):
+              input#tonnageSold(type="number", name="tonnageSold", value=sale.tonnageSold, required)
+              .error-message#tonnageSoldError
+            
+            .form-group
+              label(for="amountPaid") Amount Paid (UGX):
+              input#amountPaid(type="number", name="amountPaid", value=sale.amountPaid, required)
+              .error-message#amountPaidError
+            
+            .form-group
+              label(for="buyerName") Buyer Name:
+              input#buyerName(type="text", name="buyerName", value=sale.buyerName, required)
+              .error-message#buyerNameError
+            
+            .form-group
+              label(for="slaesAgentName") Sales Agent Name:
+              input#slaesAgentName(type="text", name="slaesAgentName", value=sale.slaesAgentName, required)
+              .error-message#slaesAgentNameError
+            
+            .form-group
+              label(for="saleDate") Sale Date:
+              input#saleDate(type="date", name="saleDate", value=sale.saleDate ? sale.saleDate.toISOString().split('T')[0] : '', required)
+              .error-message#saleDateError
+            
+            .form-group
+              label(for="saleTime") Sale Time:
+              input#saleTime(type="time", name="saleTime", value=sale.saleTime, required)
+              .error-message#saleTimeError
+            
+            .form-actions
+              button(type="submit") Update Sale
+              a.btn-cancel(href="/salesTable") Cancel 

@@ -1,0 +1,203 @@
+.table-wrapper {
+  max-width: 95vw;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 0 10px;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  max-height: 350px;
+}
+
+table {
+  width: 100%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  /* border-radius: 10px; */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: block;
+  overflow-x: auto;
+  table-layout: fixed;
+}
+
+thead {
+  background: #1a4340;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.9rem;
+  min-width: 80px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+th:first-child, td:first-child {
+  padding-left: 15px;
+  position: sticky;
+  left: 0;
+  background: inherit;
+  z-index: 1;
+  min-width: 120px;
+}
+
+th:first-child {
+  z-index: 11;
+}
+
+th:last-child, td:last-child {
+  padding-right: 15px;
+}
+
+tr:nth-child(even) {
+  background: #f4f6f8;
+}
+
+tr:hover {
+  background: #e0f2f1;
+}
+
+tr:hover td:first-child {
+  background: #e0f2f1;
+}
+
+.table-container, .credit-table-container {
+  margin: 20px 0;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 15px;
+  overflow: hidden;
+  max-height: 650px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 0 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-add {
+  background: #1a4340;
+  color: #fff;
+  padding: 6px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-add:hover {
+  background: #256026;
+  transform: translateY(-1px);
+}
+
+.actions {
+  white-space: nowrap;
+  text-align: center;
+  position: sticky;
+  right: 0;
+  background: inherit;
+  z-index: 1;
+  min-width: 100px;
+}
+
+.btn {
+  padding: 4px 10px;
+  margin: 0 3px;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-edit {
+  background: #2ecc71;
+}
+
+.btn-delete {
+  background: #e74c3c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 15px;
+  color: #666;
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+  color: #ddd;
+  margin-bottom: 10px;
+}
+
+/* Responsive Fixes */
+@media (max-width: 900px) {
+  th, td {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    min-width: 80px;
+  }
+
+  .table-container, .credit-table-container {
+    padding: 10px;
+    margin: 15px 0;
+  }
+
+  .btn {
+    padding: 3px 6px;
+    font-size: 0.8rem;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .btn-add {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Remove stickiness on small screens */
+  th:first-child, td:first-child,
+  .actions {
+    position: static;
+    background: none;
+  }
+}

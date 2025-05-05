@@ -1,0 +1,195 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Credit Payment Table
+    //- External stylesheets (optional)
+    // link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+    // link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+
+    style.
+      .notification-popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background-color: rgb(90, 156, 152);
+        color: white;
+        border-radius: 6px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(150%);
+        transition: transform 0.3s ease-out;
+      }
+      .notification-popup.show {
+        transform: translateX(0);
+      }
+      .notification-popup i {
+        font-size: 1.2rem;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 1.5rem;
+        color: #666;
+      }
+      .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+        color: #ddd;
+      }
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Credit
+        nav.sidebar-nav
+          ul
+            //- li
+            //-   a(href="/manager")
+            //-     i.fas.fa-chart-bar
+            //-     |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+
+      main.main-content
+        .credit-table-container
+          h2 Credit Table
+
+          if success
+            .notification-popup#successPopup
+              i.fas.fa-check-circle
+              span Successfully submitted!
+
+          .table-container
+            .table-header
+              h2 Credit Payment Records
+              a.btn-add(href="/addCredit")
+                i.fas.fa-plus
+                span Add Record
+
+            .search-container
+              .search-box
+                i.fas.fa-search.search-icon
+                input#searchInput.search-input(type="text", placeholder="Search records...")
+                i.fas.fa-times#clearSearch.clear-search
+
+            .table-wrapper
+              table
+                thead
+                  tr
+                    th BuyerName 
+                    th NIN
+                    th Location
+                    th Contact
+                    th Amount
+                    th Sales Agent
+                    th Due Date
+                    th ProduceName 
+                    th Produce Type
+                    th Tonnage
+                    th Selling Price
+                    th Dispatch
+                    th Actions
+                tbody#creditTableBody
+                  if credits && credits.length
+                    each credit in credits
+                      tr
+                        td(data-label="Buyer") #{credit.NameofBuyer}
+                        td(data-label="NIN") #{credit.NIN}
+                        td(data-label="Location") #{credit.location}
+                        td(data-label="Contact") #{credit.contant}
+                        td(data-label="Amount") #{credit.AmountDue}
+                        td(data-label="Agent") #{credit.agentName}
+                        td(data-label="Due Date") #{credit.DueDate ? credit.DueDate.toISOString().split('T')[0] : ''}
+                        td(data-label="Produce") #{credit.produceName}
+                        td(data-label="Type") #{credit.TypeofProduce}
+                        td(data-label="Tonnage") #{credit.Tonnage}
+                        td(data-label="Price") #{credit.cost}
+                        td(data-label="Dispatch") #{credit.DateofDispatch ? credit.DateofDispatch.toISOString().split('T')[0] : ''}
+                        td.actions(data-label="Actions")
+                          a.btn.btn-edit(href=`/editCredit/${credit._id}`)
+                            i.fas.fa-edit
+                          a.btn.btn-delete(href=`/deleteCredit/${credit._id}`)
+                            i.fas.fa-trash-alt
+                  else
+                    tr.empty-row
+                      td(colspan="13")
+                        .empty-state
+                          i.fas.fa-database
+                          p No records found
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const successPopup = document.getElementById('successPopup');
+        if (successPopup) {
+          setTimeout(() => successPopup.classList.add('show'), 100);
+          setTimeout(() => successPopup.classList.remove('show'), 5000);
+          successPopup.addEventListener('click', () => successPopup.classList.remove('show'));
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
+
+        if (searchInput && clearSearch) {
+          searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#creditTableBody tr:not(.empty-row)');
+            let hasResults = false;
+
+            rows.forEach(row => {
+              const text = row.textContent.toLowerCase();
+              if (text.includes(searchTerm)) {
+                row.style.display = '';
+                hasResults = true;
+              } else {
+                row.style.display = 'none';
+              }
+            });
+
+            clearSearch.style.display = searchTerm.length > 0 ? 'block' : 'none';
+            document.querySelector('.empty-row').style.display = hasResults ? 'none' : '';
+          });
+
+          clearSearch.addEventListener('click', function() {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input'));
+            this.style.display = 'none';
+          });
+        }
+      });

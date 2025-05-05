@@ -1,0 +1,94 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Sales Payment Table
+    link(rel="stylesheet", href="/css/dashboard.css")
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/tables.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+
+    
+    
+
+  body
+    .dashboard-container
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="Company Logo")
+          h2.dashboard-title Sales
+        nav.sidebar-nav
+          ul
+            li
+              a(href="/manager")
+                i.fas.fa-chart-bar
+                |  Dashboard
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Add Produce
+            li
+              a(href="/addCredit")
+                i.fas.fa-chart-bar
+                |  Add Credit
+            li
+              a(href="/salesTable")
+                i.fas.fa-chart-bar
+                |  Sales Table
+            li
+              a(href="/addproduce")
+                i.fas.fa-chart-bar
+                |  Produce Table
+            li
+              a(href="/recordprocurement")
+                i.fas.fa-table
+                |  Procurement List
+            li
+              a(href="/creditTable")
+                i.fas.fa-table
+                |  Credit Table
+            li
+              a(href="/land")
+                i.fas.fa-sign-out-alt
+                |  Logout
+      main.main-content
+        header.header
+          h1 Sales Payment Records
+        .table-container
+          h2 Sales Payment Records
+          div.table-wrapper
+            table
+              thead
+                tr
+                  th Buyer Name
+                  th Location
+                  th Contact (Phone)
+                  th Total Amount (UGX)
+                  th Sales Agent Name
+                  th Due Date
+                  th Produce Name
+                  th Type of Produce
+                  th Tonnage (kg)
+                  th Date of Dispatch
+                  th Actions
+              tbody
+                if sales && sales.length
+                  each sale in sales
+                    tr
+                      td #{sale.buyerName}
+                      td #{sale.slaesAgentName}
+                      td #{sale.produceName}
+                      td #{sale.tonnageSold}
+                      td #{sale.amountPaid}
+                      td #{sale.saleDate}
+                      td #{sale.saleTime}
+                      td
+                        a(href=`/updateSale?id=${sale._id}`, class="btn btn-edit") Edit
+                        a(href=`/deleteSale?id=${sale._id}`, class="btn btn-delete") Delete
+                else
+                  tr
+                    td(colspan="8") No records found.
+        script(src="/js/creditT.js")

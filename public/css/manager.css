@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(4px);
+    color: #0e0d0d;
+    overflow: hidden; 
+  }
+  
+  .dashboard-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: #1a4340;
+    color: white;
+    padding-top: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .logo {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    border: 3px solid white; box-shadow: 0px 0px 2px #0d0d0d,
+    0px 0px 0px 5px #eaeced,
+    8px 8px 15px #262728,
+    -8px -8px 15px #aeaaaa;
+    background-size: cover;
+  }
+  
+  .nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav li {
+    margin: 10px 0;
+  }
+  
+  .nav a {
+    display: block;
+    padding: 12px 20px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .nav a:hover,
+  .nav a.active {
+    background-color: rgba(182, 231, 198, 0.2);
+  }
+  
+  .main-content {
+    margin-left: 240px;
+    padding: 40px;
+    flex-grow: 1;
+    min-height: 100vh;
+    padding-bottom: 100px;
+    overflow: auto;
+  }
+  
+  header h1 {
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+  }
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 20px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    flex: 0 1 calc(33.33% - 40px); /* 3 per row with spacing */
+    padding: 40px;
+    border-radius: 20px;
+    color: rgb(248, 247, 247);
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+  }
+  .card { background-color: #1a4340; }
+  .card { background-color: #1a4340; }
+  .card { background-color: #1a4340; }
+  .card { background-color: #1a4340; }
+  .card { background-color: #1a4340; }
+  .card { background-color: #1a4340; }
+  
+  footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #1a4340;
+    color: #fdfdfd;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 240px);
+    left: 240px;
+    display:flex;
+    justify-content: center;
+    gap: 20px;
+    font-weight: 500;
+    align-items: center;
+    z-index: 10;
+  }
+
+  footer p {
+    margin: 0;
+    white-space: nowrap;
+  }
+  
