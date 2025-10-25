@@ -11,7 +11,7 @@ const ProduceSchema = new mongoose.Schema({
         type:Date,
         trim:true
     },
-    producecost:{
+    cost:{
         type:Number,
         trim:true
     },
@@ -27,7 +27,7 @@ const ProduceSchema = new mongoose.Schema({
         type:Number,
         trim:true
     },
-    sellingprice:{
+    salePrice:{
         type:Number,
         trim:true
     }

@@ -13,52 +13,52 @@ head
     .form-group
       label(for='first-name') First Name
       .input-with-icon
-        input#first-name(type='text' name='firstname' required='')
+        input#first-name(type='text' name='firstname')
         i.fas.fa-user
-      small#first-name-error.error-message
+      span#first-name-error.error-message
     .form-group
       label(for='last-name') Last Name
       .input-with-icon
-        input#last-name(type='text' name='lastname' required='')
+        input#last-name(type='text' name='lastname')
         i.fas.fa-user
-      small#last-name-error.error-message
+      span#last-name-error.error-message
     .form-group
       label(for='email') Email
       .input-with-icon
-        input#email(type='email' name='email' required='')
+        input#email(type='email' name='email')
         i.fas.fa-envelope
-      small#email-error.error-message
+      span#email-error.error-message
     .form-group
       label(for='password') Password
       .input-with-icon
-        input#password(type='password' name='password' required='')
+        input#password(type='password' name='password')
         i.fas.fa-lock
-      small#password-error.error-message
+      span#password-error.error-message
     .form-group
       label(for='confirm-password') Confirm Password
       .input-with-icon
-        input#confirm-password(type='password' name='confirm-password' required='')
+        input#confirm-password(type='password' name='confirm-password')
         i.fas.fa-lock
-      small#confirm-password-error.error-message
+      span#confirm-password-error.error-message
     .form-group
       label(for='role') Role
       .select-with-icon
-        select#role(name='role' required='')
-          option(value='' disabled='' selected='') Select Role
+        select#role(name='role')
+          option(value='' disabled selected) Select Role
           option(value='manager') Manager
           option(value='director') Director
           option(value='salesagent') SalesAgent
         i.fas.fa-briefcase
-      small#role-error.error-message
+      span#role-error.error-message
     .form-group
       label(for='branch') Branch Name
       .select-with-icon
-        select#branch(name='branch' required='')
-          option(value='' disabled='' selected='') Select Branch
+        select#branch(name='branch')
+          option(value='' disabled selected) Select Branch
           option(value='maganjo') Maganjo
           option(value='matuga') Matuga
           option(value='other') Other
         i.fas.fa-map-marker-alt
-      small#branch-error.error-message
+      span#branch-error.error-message
     button(type='submit') Sign Up
-script(src='/Public/js/signup.js')
+script(src='/js/signup.js')

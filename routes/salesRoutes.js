@@ -16,13 +16,13 @@ router.post("/addSale", async (req, res) => {
   try {
     console.log("Form data received:", req.body);
     const sale = new Sale({
-      produceName: req.body.produce,
-      tonnageSold: req.body.tonnage,
-      amountPaid: req.body.amount_paid,
-      buyerName: req.body.buyer_name,
-      slaesAgentName: req.body.sales_agent,
-      saleDate: req.body.sale_date,
-      saleTime: req.body.sale_time
+      produceName: req.body.produceName,
+      tonnageSold: req.body.tonnageSold,
+      amountPaid: req.body.amountPaid,
+      buyerName: req.body.buyerName,
+      slaesAgentName: req.body.salesAgentName,
+      saleDate: req.body.saleDate,
+      saleTime: req.body.saleTime
     });
     
     await sale.save();
@@ -78,19 +78,31 @@ router.post("/updateSale", async (req, res) => {
   }
 });
 
-// DELETE sale record
-router.post("/deleteSale", 
-  connectEnsureLogin.ensureLoggedIn(), 
-  async (req, res) => {
-    try {
-      await Sale.deleteOne({ _id: req.body.id });
-      res.redirect("/salesTable?success=true");
-    } catch (error) {
-      console.error("Error deleting sale:", error);
-      res.redirect("/salesTable?error=Delete failed");
-    }
+// // DELETE sale record
+// router.post("/deleteSale", 
+//   connectEnsureLogin.ensureLoggedIn(), 
+//   async (req, res) => {
+//     try {
+//       await Sale.deleteOne({ _id: req.body.id });
+//       res.redirect("/salesTable");
+//     } catch (error) {
+//       console.error("Error deleting sale:", error);
+//       res.redirect("/salesTable");
+//     }
+//   }
+// );
+
+// Delete Sale Route
+router.get('/deleteSale', async (req, res) => {
+  try {
+      await Sale.findByIdAndDelete(req.query.id);
+      res.redirect('/salesTable');
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error deleting sale');
   }
-);
+});
+
 
 // Sales monitoring dashboard
 router.get("/salesmonitoringmaga", (req, res) => {

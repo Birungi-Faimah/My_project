@@ -1,16 +1,13 @@
-doctype html
-head
-  meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title Matuga Sales Dashboard
-  link(rel="stylesheet", href="/css/dashboard.css")
-  link(rel="stylesheet", href="/css/forms.css")
-  link(rel="stylesheet", href="/css/tables.css")
-  //- link(rel='stylesheet' href='/css/salesagentmatuga.css')
-  //- link(rel="stylesheet", href="/css/procurement.css")
+meta(charset='UTF-8')
+meta(name='viewport', content='width=device-width, initial-scale=1.0')
+title Sales Dashboard
+link(rel="stylesheet", href="/css/dashboard.css")
+link(rel="stylesheet", href="/css/forms.css")
+link(rel="stylesheet", href="/css/tables.css")
+link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css")
 body
   .dashboard-container
-    aside.sidebar
+    aside.sidebar(style="position: fixed; width: 250px; height: 100vh; top: 0; left: 0;")
       .logo-container
         .logo-circle
           img(src="/images/hand.jpg", alt="Company Logo")
@@ -20,50 +17,59 @@ body
           li
             a(href="/salesdashboard")
               i.fas.fa-chart-bar
-              |  Dashboard
+              | Dashboard
           li
             a(href="/salesTable")
               i.fas.fa-table
-              |  Sales Table
+              | Sales Table
+          li
+            a(href="/addSale")
+              i.fas.fa-hand-holding-usd
+              | Add Sale
           li
             a(href="/land")
               i.fas.fa-sign-out-alt
-              |  Logout
-    main.main-content
-      header
-        h1 Matuga Sales Dashboard
+              | Logout
+main.main-content
+  .container
       section#new-sale
-        h2 Record New Sale
-        form#sales-form(action="/addSale" method="POST")
-          div
-            label(for='produce') Produce:
-            select#produce(name='produce' required)
-              option(value='') Select Produce
-              option(value='maize') Maize
-              option(value='beans') Beans
-              option(value='groundnuts') Groundnuts
-              option(value='cow_peas') Cow Peas
-              option(value='soy_beans') Soy Beans
-          div
-            label(for='tonnage') Tonnage (kgs):
-            input#tonnage(type='number' name='tonnage' min='0' required)
-          div
-            label(for='amount_paid') Amount Paid (UGX):
-            input#amount_paid(type='number' name='amount_paid' min='10000' required)
-          div
-            label(for='buyer_name') Buyer's Name:
-            input#buyer_name(type='text' name='buyer_name' minlength='2' required)
-          div
-            label(for='sales_agent') Sales Agent's Name:
-            input#sales_agent(type='text' name='sales_agent' value='Matuga' minlength='2' readonly)
-          div
-            label(for='sale_date') Date:
-            input#sale_date(type='date' name='sale_date' required)
-          div
-            label(for='sale_time') Time:
-            input#sale_time(type='time' name='sale_time' required)
-          button(type='submit') Record Sale
-        //- #form-message.hidden
-      footer
-        p © 2025 Matuga Sales Tracking
-      script(src='/js/salesagentmatuga.js')
+      h2 Record New Sale
+      form#sales-form(action="/addSale" method="POST")
+        div
+          label(for='produceName') Produce:
+          select#produce(name='produceName')
+            option(value='') Select Produce
+            option(value='maize') Maize
+            option(value='beans') Beans
+            option(value='groundnuts') Groundnuts
+            option(value='cow_peas') Cow Peas
+            option(value='soy_beans') Soy Beans
+          span.error-message#produce-error
+        div
+          label(for='tonnageSold') Tonnage (kgs):
+          input#tonnage(type='number' name='tonnageSold' )
+          span.error-message#tonnage-error
+        div
+          label(for='amountPaid') Amount Paid (UGX):
+          input#amount_paid(type='number' name='amountPaid' )
+          span.error-message#amountPaid-error
+        div
+          label(for='buyerName') Buyer's Name:
+          input#buyer_name(type='text' name='buyerName' )
+          span.error-message#buyerName-error
+        div
+          label(for='salesAgentName') Sales Agent's Name:
+          input#sales_agent(type='text' name='salesAgentName' value='Maganjo'  readonly)
+          span.error-message#salesAgent-error
+        div
+          label(for='saleDate') Date:
+          input#sale_date(type='date' name='saleDate')
+          span.error-message#saleDate-error
+        div
+          label(for='saleTime') Time:
+          input#sale_time(type='time' name='saleTime')
+          span.error-message#saleTime-error
+        button(type='submit') Record Sale
+        script(src='/js/salesformvalidation.js')
+footer
+p © 2025 Matuga Sales Tracking

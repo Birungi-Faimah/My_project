@@ -16,7 +16,7 @@ const SaleSchema = new mongoose.Schema({
         type:String,
         trim:true
     },
-    slaesAgentName:{
+    salesAgentName:{
         type:String,
         trim:true
     },

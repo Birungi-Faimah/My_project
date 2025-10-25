@@ -129,6 +129,12 @@ button:hover {
     text-decoration: underline;
 }
 
+.error-message {
+    display: block;
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
 .message {
     margin-top: 15px;
     padding: 10px;

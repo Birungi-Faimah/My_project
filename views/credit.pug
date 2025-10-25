@@ -16,42 +16,40 @@ body
         h2.dashboard-title Credit
       nav.sidebar-nav
         ul
-          //- li
-          //-   a(href="/manager")
-          //-     i.fas.fa-chart-bar
-          //-     |  Dashboard
           li
             a(href="/addproduce")
-              i.fas.fa-chart-bar
-              |  Add Produce
+              i.fas.fa-seedling
+              | &nbsp;Add Produce
           li
             a(href="/addCredit")
-              i.fas.fa-chart-bar
-              |  Add Credit
+              i.fas.fa-plus-circle
+              | &nbsp;Add Credit
           li
             a(href="/salesTable")
-              i.fas.fa-chart-bar
-              |  Sales Table
+              i.fas.fa-table
+              | &nbsp;Sales Table
           li
             a(href="/addproduce")
-              i.fas.fa-chart-bar
-              |  Produce Table                
+              i.fas.fa-seedling
+              | &nbsp;Produce Table 
+          li
+            a(href="/addSale")
+              i.fas.fa-hand-holding-usd
+              | &nbsp;Add Sale           
           li
             a(href="/recordprocurement")
-              i.fas.fa-table
-              |  Procurement List
+              i.fas.fa-clipboard-list
+              | &nbsp;Procurement List
           li
             a(href="/creditTable")
-              i.fas.fa-table
-              |  Credit Table    
+              i.fas.fa-credit-card
+              | &nbsp;Credit Table   
           li
             a(href="/land")
               i.fas.fa-sign-out-alt
-              |  Logout
+              | &nbsp;Logout
     main.main-content
       .container
-        //- .logo
-        //-   img(src="/images/hand.jpg", alt="Company Logo")
         h2 #{credit ? 'Edit Credit Entry' : 'Trusted Buyer Credit Form'}
         
         if success
@@ -63,79 +61,77 @@ body
           .form-grid
             .form-group
               label(for="NameofBuyer") Buyer Name:
-              input(type="text", name="NameofBuyer", id="NameofBuyer", value=credit ? credit.NameofBuyer : '', required)
-            
+              input(type="text", name="NameofBuyer", id="NameofBuyer", value=credit ? credit.NameofBuyer : '')
+              span.error-message#NameofBuyerError
+
             .form-group
               label(for="NIN") National ID:
-              input(type="text", name="NIN", id="NIN", value=credit ? credit.NIN : '', required)
-            
+              input(type="text", name="NIN", id="NIN", value=credit ? credit.NIN : '')
+              span.error-message#NINError
+
             .form-group
               label(for="location") Location:
-              input(type="text", name="location", id="location", value=credit ? credit.location : '', required)
-            
+              input(type="text", name="location", id="location", value=credit ? credit.location : '')
+              span.error-message#locationError
+
             .form-group
               label(for="contant") Phone:
-              input(type="tel", name="contant", id="contant", value=credit ? credit.contant : '', required)
-            
+              input(type="tel", name="contant", id="contant", value=credit ? credit.contant : '')
+              span.error-message#contantError
+
             .form-group
               label(for="AmountDue") Amount (UGX):
-              input(type="number", name="AmountDue", id="AmountDue", value=credit ? credit.AmountDue : '', required)
-            
+              input(type="number", name="AmountDue", id="AmountDue", value=credit ? credit.AmountDue : '')
+              span.error-message#AmountDueError
+
             .form-group
               label(for="agentName") Agent:
-              input(type="text", name="agentName", id="agentName", value=credit ? credit.agentName : '', required)
-            
+              input(type="text", name="agentName", id="agentName", value=credit ? credit.agentName : '')
+              span.error-message#agentNameError
+
             .form-group
               label(for="DueDate") Due Date:
-              input(type="date", name="DueDate", id="DueDate", value=credit ? credit.DueDate.toISOString().split('T')[0] : '', required)
-            
+              input(
+                type="date",
+                name="DueDate",
+                id="DueDate",
+                value=credit && credit.DueDate ? new Date(credit.DueDate).toISOString().split('T')[0] : ''
+              )
+              span.error-message#DueDateError
+
             .form-group
               label(for="produceName") Produce:
-              input(type="text", name="produceName", id="produceName", value=credit ? credit.produceName : '', required)
-            
+              input(type="text", name="produceName", id="produceName", value=credit ? credit.produceName : '')
+              span.error-message#produceNameError
+
             .form-group
               label(for="TypeofProduce") Type:
-              input(type="text", name="TypeofProduce", id="TypeofProduce", value=credit ? credit.TypeofProduce : '', required)
-            
+              input(type="text", name="TypeofProduce", id="TypeofProduce", value=credit ? credit.TypeofProduce : '')
+              span.error-message#TypeofProduceError
+
             .form-group
               label(for="Tonnage") Tonnage:
-              input(type="number", name="Tonnage", id="Tonnage", value=credit ? credit.Tonnage : '', required)
-            
+              input(type="number", name="Tonnage", id="Tonnage", value=credit ? credit.Tonnage : '')
+              span.error-message#TonnageError
+
             .form-group
               label(for="cost") Price (UGX):
-              input(type="number", name="cost", id="cost", value=credit ? credit.cost : '', required)
-            
+              input(type="number", name="cost", id="cost", value=credit ? credit.cost : '')
+              span.error-message#costError
+
             .form-group
               label(for="DateofDispatch") Dispatch:
-              input(type="date", name="DateofDispatch", id="DateofDispatch", value=credit ? credit.DateofDispatch.toISOString().split('T')[0] : '', required)
-          
+              input(
+                type="date",
+                name="DateofDispatch",
+                id="DateofDispatch",
+                value=credit && credit.DateofDispatch ? new Date(credit.DateofDispatch).toISOString().split('T')[0] : ''
+              )
+              span.error-message#DateofDispatchError
+
           .button-container
             button(type="submit", id="submitBtn")
               i.fas.fa-paper-plane
               | #{credit ? 'Update' : 'Submit'}
-      //- footer.footer
-      //-   p © 2025 Karibu groceries limited. All rights reserved.
-      //-   p Developed by Birungi Faimah Khan
-      script.
-        document.addEventListener('DOMContentLoaded', function() {
-          const form = document.getElementById('creditForm');
-          const submitBtn = document.getElementById('submitBtn');
-          
-          // Form validation
-          form.addEventListener('input', function() {
-            const allFilled = Array.from(form.elements).every(el => {
-              return !el.required || (el.type !== 'submit' && el.value.trim() !== '');
-            });
-            
-            if (allFilled) {
-              submitBtn.style.backgroundColor = '#2ecc71';
-            } else {
-              submitBtn.style.backgroundColor = '#95a5a6';
-            }
-          });
-          
-          form.addEventListener('submit', function(e) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-          });
-        });
+
+  script(src="/js/credit.js")

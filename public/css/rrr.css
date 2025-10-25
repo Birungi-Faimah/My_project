@@ -15,7 +15,7 @@
     height: 100vh;
   }
   
-  /* Container */
+  
   .container {
     background-color: #ffffff;
     padding: 30px;
@@ -25,40 +25,40 @@
     max-width: 450px;
   }
   
-  /* Logo */
+  
   .logo img {
     display: block;
     margin: 0 auto 20px;
-    width: 100px; /* Adjust width as needed */
+    width: 100px; 
     height: auto;
   }
   
-  /* Heading */
+  
   h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
   }
   
-  /* Form */
+  
   form#registerForm {
     display: flex;
     flex-direction: column;
   }
   
-  /* Form Group */
+  
   .form-group {
     margin-bottom: 15px;
   }
   
-  /* Labels */
+
   label {
     font-size: 14px;
     color: #333;
     margin-bottom: 5px;
   }
   
-  /* Input and Select Fields */
+
   input[type="text"],
   input[type="email"],
   input[type="password"],
@@ -71,7 +71,7 @@
     color: #333;
   }
   
-  /* Button */
+
   button[type="submit"] {
     background-color: #4CAF50;
     color: #fff;
@@ -87,7 +87,7 @@
     background-color: #45a049;
   }
   
-  /* Error and Success Messages */
+
   #error-message.error {
     color: #ff4d4d;
     text-align: center;

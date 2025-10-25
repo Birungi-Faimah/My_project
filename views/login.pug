@@ -1,35 +1,32 @@
 doctype html
 head
-  meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(charset="UTF-8")
+  meta(name="viewport", content="width=device-width,initial-scale=1")
   title Login
-  link(rel='stylesheet' href='/css/login.css')
-  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css')
-.login-container
-  // Logo and Welcome Text
-  .logo
-    img(src='images/hand.jpg' alt='Karibu Groceries Logo')
-    h1 Welcome back!
-    h2 Login
-  // Login Form
-  form#loginForm(action='/login',method='post')
-    // Username Field
-    .form-group
-      label(for='email') email:
-      .input-container
-        span.input-icon &#x1F464;
-        input#username(type='text' name='email' required='')
-    // Password Field
-    .form-group
-      label(for='password') Password:
-      .input-container
-        span.input-icon &#x1F512;
-        input#password(type='password' name='password' required='')
-    
-    button(type='submit') Login
-    #loginMessage.message
-    // Register Link
-    .register-link
-      | Don&apos;t have an account? 
-      a(href='./Signup') Register here
-script(src='/js/login.js')
+  link(rel="stylesheet", href="/css/login.css")
+  link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+body
+  .login-container
+    .logo
+      img(src="images/hand.jpg", alt="Karibu Groceries Logo")
+      h1 Welcome back!
+      h2 Login
+    form#loginForm(action="/login", method="post")
+      .form-group
+        label(for="email") Email:
+        .input-container
+          input#username(type="text", name="email")
+          span.input-icon 👤
+        span.error-message#emailError
+      .form-group
+        label(for="password") Password:
+        .input-container
+          input#password(type="password", name="password")
+          span.input-icon 🔒
+        span.error-message#passwordError
+      button(type="submit") Login
+      #loginMessage.message
+      .register-link
+        | Don't have an account? 
+        a(href="./Signup") Register here
+script(src="/js/login.js")

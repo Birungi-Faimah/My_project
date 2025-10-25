@@ -1,9 +1,9 @@
 doctype html
-html
+html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width,initial-scale=1")
-    title Maganjo Procurement Dashboard
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Edit Produce Record
     link(rel="stylesheet", href="/css/dashboard.css")
     link(rel="stylesheet", href="/css/forms.css")
     link(rel="stylesheet", href="/css/tables.css")
@@ -19,37 +19,29 @@ html
           h2.dashboard-title Procurement
         nav.sidebar-nav
           ul
-            //- li
-            //-   a(href="/manager")
-            //-     i.fas.fa-chart-bar
-            //-     |  Dashboard
             li
               a(href="/addproduce")
-                i.fas.fa-seedling
+                i.fas.fa-chart-bar
                 |  Add Produce
             li
               a(href="/addCredit")
-                i.fas.fa-plus-circle
+                i.fas.fa-chart-bar
                 |  Add Credit
             li
-              a(href="/addsale")
-                i.fas.fa-hand-holding-usd
-                |  Add sale
-            li
               a(href="/salesTable")
-                i.fas.fa-table
+                i.fas.fa-chart-bar
                 |  Sales Table
             li
               a(href="/addproduce")
-                i.fas.fa-seedling
+                i.fas.fa-chart-bar
                 |  Produce Table
             li
               a(href="/recordprocurement")
-                i.fas.fa-clipboard-list
+                i.fas.fa-table
                 |  Procurement List
             li
               a(href="/creditTable")
-                i.fas.fa-credit-card
+                i.fas.fa-table
                 |  Credit Table
             li
               a(href="/land")
@@ -57,48 +49,54 @@ html
                 |  Logout
       main.main-content
         header
-          h1 Maganjo Procurement Dashboard
+          h1 Edit Produce Record
         section.dashboard-content
-          h2 Produce Procurement Records
-          form#procurementForm(action='/addproduce', method="post", onsubmit="handleFormSubmit(event)")
+          form#editProduceForm(action=`/editProduce/${produce._id}`, method="post")
             .form-group
               label(for="produceName") Name of Produce:
-              input#produceName(type="text", name="produceName")
+              input#produceName(type="text", name="produceName", value=produce.produceName, )
               .error-message#produceNameError
+            
             .form-group
               label(for="produceType") Type of Produce:
-              input#produceType(type="text", name="produceType")
+              input#produceType(type="text", name="produceType", value=produce.produceType, )
               .error-message#produceTypeError
+            
             .form-group
-              label(for="date") Date of Procurement:
-              input#procurementDate(type="date", name="date")
-              .error-message#dateError
+              label(for="procurementDate") Date of Procurement:
+              input#procurementDate(type="date", name="date", value=produce.dateandtime ? produce.dateandtime.toISOString().split('T')[0] : '', )
+              .error-message#procurementDateError
+            
             .form-group
-              label(for="time") Time of Produce Entry:
-              input#time(type="time", name="time")
-              .error-message#timeError
+              label(for="procurementTime") Time of Produce Entry:
+              input#procurementTime(type="time", name="procurementTime", value=produce.dateandtime ? produce.dateandtime.toTimeString().slice(0,5) : '', )
+              .error-message#procurementTimeError
+            
             .form-group
               label(for="tonnage") Tonnage in kgs:
-              input#tonnage(type="number", name="tonnage")
+              input#tonnage(type="number", name="tonnage", value=produce.tonnage, )
               .error-message#tonnageError
+            
             .form-group
               label(for="cost") Cost in UgX:
-              input#cost(type="number", name="cost")
+              input#cost(type="number", name="cost", value=produce.producecost, )
               .error-message#costError
+            
             .form-group
               label(for="dealerName") Name of the Dealer:
-              input#dealerName(type="text", name="dealerName")
+              input#dealerName(type="text", name="dealerName", value=produce.dealerName, )
               .error-message#dealerNameError
+            
             .form-group
               label(for="contact") Dealer's Contact Number:
-              input#contact(type="contact", name="contact")
-              .error-message#contactError
+              input#dealerContact(type="contact", name="contact", value=produce.contact, )
+              .error-message#dealerContactError
+            
             .form-group
               label(for="salePrice") Price to be Sold at:
-              input#sellingPrice(type="number", name="salePrice")
-              .error-message#salePriceError
-            button(type="submit") Record Procurement
-          #submissionMessage.success-message(style="display:none;")
-          #errorMessage.error-message(style="display:none;")
-          #procurementData
-        //- script(src="/js/procurement.js")
+              input#sellingPrice(type="number", name="salePrice", value=produce.saleprice, )
+              .error-message#sellingPriceError
+            
+            .form-actions
+              button(type="submit") Update Produce
+              a.btn-cancel(href="/recordprocurement") Cancel 

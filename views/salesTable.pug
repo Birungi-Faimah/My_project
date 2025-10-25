@@ -28,23 +28,27 @@ html(lang="en")
                 |  Dashboard
             li
               a(href="/addproduce")
-                i.fas.fa-chart-bar
+                i.fas.fa-seedling
                 |  Add Produce
             li
               a(href="/addCredit")
-                i.fas.fa-chart-bar
+                i.fas.fa-plus-circle
                 |  Add Credit
             li
+              a(href="/addsale")
+                i.fas.fa-hand-holding-usd
+                |  Add sale
+            li
               a(href="/salesTable")
-                i.fas.fa-chart-bar
+                i.fas.fa-table
                 |  Sales Table
             li
               a(href="/addproduce")
-                i.fas.fa-chart-bar
+                i.fas.fa-seedling
                 |  Produce Table
             li
               a(href="/recordprocurement")
-                i.fas.fa-table
+                i.fas.fa-clipboard-list
                 |  Procurement List
             li
               a(href="/creditTable")
@@ -64,22 +68,20 @@ html(lang="en")
               thead
                 tr
                   th Buyer Name
-                  th Location
-                  th Contact (Phone)
-                  th Total Amount (UGX)
                   th Sales Agent Name
-                  th Due Date
+                  //- th Due Date
                   th Produce Name
-                  th Type of Produce
                   th Tonnage (kg)
+                  th Total Amount (UGX)
                   th Date of Dispatch
+                  //- th Due Date
                   th Actions
               tbody
                 if sales && sales.length
                   each sale in sales
                     tr
                       td #{sale.buyerName}
-                      td #{sale.slaesAgentName}
+                      td #{sale.salesAgentName}
                       td #{sale.produceName}
                       td #{sale.tonnageSold}
                       td #{sale.amountPaid}

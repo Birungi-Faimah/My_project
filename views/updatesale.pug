@@ -28,6 +28,10 @@ html(lang="en")
                 i.fas.fa-table
                 |  Sales Table
             li
+              a(href="/addsale")
+                i.fas.fa-chart-bar
+                |  Add sale 
+            li
               a(href="/land")
                 i.fas.fa-sign-out-alt
                 |  Logout
@@ -38,37 +42,37 @@ html(lang="en")
           form#updateSaleForm(action=`/updateSale?id=${sale._id}`, method="post")
             .form-group
               label(for="produceName") Produce Name:
-              input#produceName(type="text", name="produceName", value=sale.produceName, required)
+              input#produceName(type="text", name="produceName", value=sale.produceName,)
               .error-message#produceNameError
             
             .form-group
               label(for="tonnageSold") Tonnage Sold (kgs):
-              input#tonnageSold(type="number", name="tonnageSold", value=sale.tonnageSold, required)
+              input#tonnageSold(type="number", name="tonnageSold", value=sale.tonnageSold,)
               .error-message#tonnageSoldError
             
             .form-group
               label(for="amountPaid") Amount Paid (UGX):
-              input#amountPaid(type="number", name="amountPaid", value=sale.amountPaid, required)
+              input#amountPaid(type="number", name="amountPaid", value=sale.amountPaid,)
               .error-message#amountPaidError
             
             .form-group
               label(for="buyerName") Buyer Name:
-              input#buyerName(type="text", name="buyerName", value=sale.buyerName, required)
+              input#buyerName(type="text", name="buyerName", value=sale.buyerName,)
               .error-message#buyerNameError
             
             .form-group
               label(for="slaesAgentName") Sales Agent Name:
-              input#slaesAgentName(type="text", name="slaesAgentName", value=sale.slaesAgentName, required)
+              input#slaesAgentName(type="text", name="slaesAgentName", value=sale.slaesAgentName,)
               .error-message#slaesAgentNameError
             
             .form-group
               label(for="saleDate") Sale Date:
-              input#saleDate(type="date", name="saleDate", value=sale.saleDate ? sale.saleDate.toISOString().split('T')[0] : '', required)
+              input#saleDate(type="date", name="saleDate", value=sale.saleDate ? sale.saleDate.toISOString().split('T')[0] : '',)
               .error-message#saleDateError
             
             .form-group
               label(for="saleTime") Sale Time:
-              input#saleTime(type="time", name="saleTime", value=sale.saleTime, required)
+              input#saleTime(type="time", name="saleTime", value=sale.saleTime,)
               .error-message#saleTimeError
             
             .form-actions

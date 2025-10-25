@@ -5,8 +5,8 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title Credit Payment Table
     //- External stylesheets (optional)
-    // link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-    // link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
     link(rel="stylesheet", href="/css/dashboard.css")
     link(rel="stylesheet", href="/css/forms.css")
     link(rel="stylesheet", href="/css/tables.css")
@@ -60,37 +60,39 @@ html(lang="en")
             //-     |  Dashboard
             li
               a(href="/addproduce")
-                i.fas.fa-chart-bar
+                i.fas.fa-seedling
                 |  Add Produce
             li
+              a(href="/addsale")
+                i.fas.fa-hand-holding-usd
+                |  Add sale
+            li
               a(href="/addCredit")
-                i.fas.fa-chart-bar
+                i.fas.fa-plus-circle
                 |  Add Credit
             li
               a(href="/salesTable")
-                i.fas.fa-chart-bar
+                i.fas.fa-table
                 |  Sales Table
             li
               a(href="/addproduce")
-                i.fas.fa-chart-bar
+                i.fas.fa-seedling
                 |  Produce Table
             li
               a(href="/recordprocurement")
-                i.fas.fa-table
+                i.fas.fa-clipboard-list
                 |  Procurement List
             li
               a(href="/creditTable")
-                i.fas.fa-table
+                i.fas.fa-credit-card
                 |  Credit Table
             li
               a(href="/land")
                 i.fas.fa-sign-out-alt
                 |  Logout
-
       main.main-content
         .credit-table-container
           h2 Credit Table
-
           if success
             .notification-popup#successPopup
               i.fas.fa-check-circle
@@ -103,11 +105,11 @@ html(lang="en")
                 i.fas.fa-plus
                 span Add Record
 
-            .search-container
-              .search-box
-                i.fas.fa-search.search-icon
-                input#searchInput.search-input(type="text", placeholder="Search records...")
-                i.fas.fa-times#clearSearch.clear-search
+            //- .search-container
+            //-   .search-box
+            //-     i.fas.fa-search.search-icon
+            //-     input#searchInput.search-input(type="text", placeholder="Search records...")
+            //-     i.fas.fa-times#clearSearch.clear-search
 
             .table-wrapper
               table
@@ -143,9 +145,9 @@ html(lang="en")
                         td(data-label="Price") #{credit.cost}
                         td(data-label="Dispatch") #{credit.DateofDispatch ? credit.DateofDispatch.toISOString().split('T')[0] : ''}
                         td.actions(data-label="Actions")
-                          a.btn.btn-edit(href=`/editCredit/${credit._id}`)
+                          a.btn.btn-edit(href=`/editCredit/${credit._id}`) 
                             i.fas.fa-edit
-                          a.btn.btn-delete(href=`/deleteCredit/${credit._id}`)
+                          a.btn.btn-delete(href=`/deleteCredit/${credit._id}`) 
                             i.fas.fa-trash-alt
                   else
                     tr.empty-row
