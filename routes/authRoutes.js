@@ -14,8 +14,8 @@ router .get("/",(req, res)=>{
 
 
 router.get("/Signup", (req, res) =>{
-    res.render("Signup");
- });
+    res.render("signup");
+  });
     
  router.post("/SignUp", async (req, res) => {
   try {
