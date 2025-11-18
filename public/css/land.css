@@ -98,7 +98,8 @@ nav ul li a:hover {
 .login-btn {
     background-color: #237b75;
     color: #fff;
-    border: none;
+    text-decoration: none;
+    display: inline-block;
     padding: 15px 30px;
     font-size: 1.1em;
     cursor: pointer;
