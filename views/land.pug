@@ -11,34 +11,42 @@ main.hero
   .hero-content
     h1 Welcome to Kabribu Grocery Ltd
     p Stock Up on Fresh, Affordable Cereals;
-    form(action='/login' method='post')
-      button.login-btn(type='submit') Login to Dashboard
+    .auth-buttons
+      button#openSignup.login-btn Sign Up
+      button#openLogin.login-btn Login
   .hero-image
     img(src='/images/crops.jpg' alt='Healthy')
 #signupModal.modal
   .modal-content
     span.close-button &times;
     h2 Sign Up
-    form#signupForm
+    form#signupForm(action='/Signup' method='post')
       label(for='signup-email') Email:
-      input#signup-email(type='email' name='email')
+      input#signup-email(type='email' name='email' required)
       label(for='signup-password') Password:
-      input#signup-password(type='password' name='password' )
+      input#signup-password(type='password' name='password' required)
       button(type='submit') Sign Up
 #loginModal.modal
   .modal-content
     span.close-button &times;
     h2 Log In
-    form#loginForm
+    form#loginForm(action='/login' method='post')
       label(for='login-email') Email:
-      input#login-email(type='email' name='email')
+      input#login-email(type='email' name='email' required)
       label(for='login-password') Password:
-      input#login-password(type='password' name='password')
+      input#login-password(type='password' name='password' required)
       button(type='submit') Log In
-footer.footer.bg-dark.text-white.text-center.p-3
-  .container
-    p &copy; 2025 @Kabribu groceries Limited . All rights reserved.
-    p +256 789 123 456
-    p Developed by Birungi Faimah Khan
+footer.footer
+  .footer-container
+    .footer-section
+      p &copy; 2025 @Kabribu groceries Limited . All rights reserved.
+      p +256 789 123 456
+      p Developed by Birungi Faimah Khan
+    .footer-section
+      p Follow us on:
+      .social-icons
+        a(href='https://www.facebook.com') Facebook
+        a(href='https://www.twitter.com') Twitter
+        a(href='https://www.instagram.com') Instagram
 
 script(src='/js/landing.js')
