@@ -205,7 +205,7 @@ nav ul li a:hover {
 footer {
     background-color: white; /* Light grey background */
     color: #0f0f0f; /* Dark text color */
-    padding: 20px 0; /* Top and bottom padding */
+    padding: 10px 0; /* Top and bottom padding */
     font-size: 0.9em;
 }
 

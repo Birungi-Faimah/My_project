@@ -45,7 +45,8 @@ html(lang="en")
                 |  Logout
       main.main-content
         header
-          h1 Mr Orban's Dashboard
+          button#sidebar-toggle.fas.fa-bars
+          h1 Dashboard
         section.dashboard-cards
           .card
             h2 Total Procured
@@ -83,4 +84,9 @@ html(lang="en")
                   td(colspan="8") No procurements found.
     footer.footer
       p © 2025 Karibu groceries limited. All rights reserved.
-      p Developed by Birungi Faimah Khan 
+      p Developed by Birungi Faimah Khan
+    script.
+      document.getElementById('sidebar-toggle').addEventListener('click', function() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('active');
+      });
