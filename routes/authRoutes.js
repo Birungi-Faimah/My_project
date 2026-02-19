@@ -69,17 +69,18 @@ router.post("/login",
    }else{
        res.send("You do not have any role in the system")
    } 
+});
 
-   router.get("/logout", (req, res) => {
-    if (req.session) {
-      req.session.destroy((error) => {
-        if (error) {
-          return res.status(500).send(error, "Error logging out");
-        }
-        res.redirect("/land");
-      });
-    }
-  });
+router.get("/logout", (req, res) => {
+  if (req.session) {
+    req.session.destroy((error) => {
+      if (error) {
+        return res.status(500).send(error, "Error logging out");
+      }
+      res.redirect("/land");
+    });
+  }
+});
 
 router.get("/manager", requireRole('manager'), (req, res) =>{
   res.render("manager");
@@ -105,7 +106,5 @@ router.get("/director", requireRole('director'), (req, res) =>{
 //     res.status(500).send('Error fetching sales for Matuga');
 //   }
 // });
-
-});
 
 module.exports = router;
