@@ -63,6 +63,7 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
     text-align: center;
+    min-height: calc(100vh - 120px); /* Take up most of the viewport height */
 }
 
 .hero-content {
@@ -203,9 +204,9 @@ nav ul li a:hover {
 }
 /* Basic footer styling */
 footer {
-    background-color: white; /* Light grey background */
-    color: #0f0f0f; /* Dark text color */
-    padding: 10px 0; /* Top and bottom padding */
+    background-color: #222; /* Dark background to match header */
+    color: #fff; /* White text */
+    padding: 15px 0; /* Top and bottom padding */
     font-size: 0.9em;
 }
 
@@ -225,7 +226,7 @@ footer {
 }
 
 .footer-section h3 {
-    color: #0a0a0a; /* Example heading color */
+    color: #fff; /* White heading color */
     margin-top: 0;
     margin-bottom: 10px;
 }
@@ -245,12 +246,12 @@ footer {
 }
 
 .footer-section ul li a {
-    color: #555;
+    color: #ccc;
     text-decoration: none;
 }
 
 .footer-section ul li a:hover {
-    color: black
+    color: #fff;
 }
 
 /* Social Icons */
@@ -258,12 +259,12 @@ footer {
     display: inline-block;
     margin-right: 10px;
     font-size: 1.5em;
-    color: rgb(8, 8, 8);
+    color: #ccc;
     text-decoration: none;
 }
 
 .social-icons a:hover {
-    color:black;
+    color: #fff;
 }
 
 /* Responsive adjustments */
@@ -289,5 +290,5 @@ footer p:last-child {
 }
 
 .social-icons a:hover {
-    color: rgb(7, 7, 7);
+    color: #fff;
 }
