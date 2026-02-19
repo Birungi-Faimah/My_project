@@ -4,6 +4,9 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -58,11 +61,11 @@ nav ul li a:hover {
 .hero {
     background-color: #1a4340; /* Dark green similar to the image */
     color: #fff;
-    padding: 80px 5%;
+    padding: 30px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: calc(100vh - 120px); /* Take up most of the viewport height */
+    flex: 1; /* Take remaining space */
     gap: 40px;
 }
 
@@ -74,7 +77,7 @@ nav ul li a:hover {
 }
 
 .hero-content h1 {
-    font-size: 3em;
+    font-size: 2.5em;
     margin-bottom: 10px;
 }
 
@@ -103,8 +106,8 @@ nav ul li a:hover {
     color: #fff;
     text-decoration: none;
     display: inline-block;
-    padding: 15px 30px;
-    font-size: 1.1em;
+    padding: 12px 25px;
+    font-size: 1em;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -126,7 +129,7 @@ nav ul li a:hover {
 .hero-image img {
     width: 100%;
     height: auto;
-    max-height: 500px;
+    max-height: 400px;
     object-fit: cover;
     display: block;
 }
