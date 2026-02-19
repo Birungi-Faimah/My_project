@@ -120,10 +120,10 @@ nav ul li a:hover {
 
 .hero-image {
     flex: 1;
-    max-width: 450px;
-    width: 450px;
-    height: 320px;
-    border-radius: 225px / 160px;
+    max-width: 500px;
+    width: 500px;
+    height: 380px;
+    border-radius: 250px / 190px;
     overflow: hidden;
 }
 
