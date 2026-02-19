@@ -276,9 +276,53 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        padding: 30px 20px;
+        min-height: auto;
+        gap: 30px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .login-btn {
+        margin: 5px 0;
+        padding: 12px 25px;
+    }
+
+    .hero-image {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        border-radius: 150px / 100px;
+    }
+
+    .hero-image img {
+        max-height: 300px;
+    }
+
     .footer-section {
-        flex-basis: 100%; /* One section per row on small screens */
-        text-align: center; /* Center text on smaller screens */
+        flex-basis: 100%;
+        text-align: center;
     }
 
     .footer-section ul {
@@ -287,6 +331,43 @@ footer {
 
     .social-icons {
         text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 8px 15px;
+    }
+
+    header marquee {
+        font-size: 0.9em;
+    }
+
+    .hero {
+        padding: 20px 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.6em;
+    }
+
+    .hero-content p {
+        font-size: 0.9em;
+    }
+
+    .login-btn {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+
+    .hero-image {
+        max-height: 250px;
+        border-radius: 125px / 80px;
+    }
+
+    footer {
+        padding: 10px 0;
+        font-size: 0.8em;
     }
 }
 
