@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const emailError = document.getElementById('emailError');
     const passwordError = document.getElementById('passwordError');
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hasErrors = true;
         }
 
-        // If no validation errors, allow the form to submit
+        // If no validation errors, submit the form
         if (!hasErrors) {
             loginForm.submit();
         }

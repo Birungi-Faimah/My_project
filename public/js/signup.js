@@ -1,14 +1,13 @@
 // /Public/js/signup.js
-// This is a separate JavaScript file.
-// You can add your client-side form validation and other logic here.
+// Client-side form validation for signup form
 
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signup-form');
-    const firstNameInput = document.getElementById('first-name');
-    const lastNameInput = document.getElementById('last-name');
+    const firstNameInput = document.getElementById('firstname');
+    const lastNameInput = document.getElementById('lastname');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirm-password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
     const roleSelect = document.getElementById('role');
     const branchSelect = document.getElementById('branch');
   
@@ -32,16 +31,25 @@ document.addEventListener('DOMContentLoaded', function() {
       roleError.textContent = '';
       branchError.textContent = '';
   
+      // First name validation
       if (!firstNameInput.value.trim()) {
         firstNameError.textContent = 'First name is required.';
         isValid = false;
-      }
-  
-      if (!lastNameInput.value.trim()) {
-        lastNameError.textContent = 'Last name is required.';
+      } else if (firstNameInput.value.trim().length < 2) {
+        firstNameError.textContent = 'First name must be at least 2 characters.';
         isValid = false;
       }
   
+      // Last name validation
+      if (!lastNameInput.value.trim()) {
+        lastNameError.textContent = 'Last name is required.';
+        isValid = false;
+      } else if (lastNameInput.value.trim().length < 2) {
+        lastNameError.textContent = 'Last name must be at least 2 characters.';
+        isValid = false;
+      }
+  
+      // Email validation
       if (!emailInput.value.trim()) {
         emailError.textContent = 'Email is required.';
         isValid = false;
@@ -50,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isValid = false;
       }
   
+      // Password validation
       if (!passwordInput.value) {
         passwordError.textContent = 'Password is required.';
         isValid = false;
@@ -58,21 +67,25 @@ document.addEventListener('DOMContentLoaded', function() {
         isValid = false;
       }
   
+      // Confirm password validation
       if (!confirmPasswordInput.value) {
-        confirmPasswordError.textContent = 'Confirm password is required.';
+        confirmPasswordError.textContent = 'Please confirm your password.';
         isValid = false;
       } else if (confirmPasswordInput.value !== passwordInput.value) {
         confirmPasswordError.textContent = 'Passwords do not match.';
         isValid = false;
       }
   
+      // Role validation
       if (!roleSelect.value) {
         roleError.textContent = 'Please select a role.';
         isValid = false;
       }
   
-      if (!branchSelect.value) {
-        branchError.textContent = 'Please select a branch.';
+      // Branch validation (required for manager and salesagent)
+      const selectedRole = roleSelect.value;
+      if ((selectedRole === 'manager' || selectedRole === 'salesagent') && !branchSelect.value) {
+        branchError.textContent = 'Branch is required for managers and sales agents.';
         isValid = false;
       }
   
@@ -82,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   
     function isValidEmail(email) {
-      // Basic email validation regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
