@@ -3,28 +3,36 @@ const router = express.Router();
 const Produce = require('../models/Produce');
 
 // GET: Render the form to add produce
-router.get("/addProduce", async (req, res) => {
-    const produces = await Produce.find();
-    res.render('recordprocurement', { produces });
+router.get("/addproduce", async (req, res) => {
+    res.render('procurement', {
+        success: req.query.success,
+        error: req.query.error
+    });
 });
 
 // POST: Handle form submission to add produce
-router.post("/addProduce", async (req, res) => {
+router.post("/addproduce", async (req, res) => {
     try {
-        await Produce.create({
+        console.log("Procurement form data:", req.body);
+        
+        const produce = new Produce({
             produceName: req.body.produceName,
             produceType: req.body.produceType,
             producedateandtime: new Date(`${req.body.date}T${req.body.time}`),
-            producecost: req.body.cost,
+            cost: parseFloat(req.body.cost) || 0,
             dealerName: req.body.dealerName,
-            branch: "", // Add dynamic branch if required
+            branch: req.body.branch,
             contact: req.body.contact,
-            salePrice: req.body.salePrice,
-            tonnage: req.body.tonnage
+            salePrice: parseFloat(req.body.salePrice) || 0,
+            tonnage: parseFloat(req.body.tonnage) || 0
         });
-        res.redirect("/recordprocurement");
+        
+        await produce.save();
+        console.log("Produce saved:", produce);
+        res.redirect("/recordprocurement?success=true");
     } catch (err) {
-        res.status(500).send('Error saving produce');
+        console.error("Error saving produce:", err);
+        res.redirect("/addproduce?error=" + encodeURIComponent(err.message));
     }
 });
 

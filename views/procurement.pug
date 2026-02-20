@@ -1,104 +1,290 @@
 doctype html
-html
+html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width,initial-scale=1")
-    title Maganjo Procurement Dashboard
-    link(rel="stylesheet", href="/css/dashboard.css")
-    link(rel="stylesheet", href="/css/forms.css")
-    link(rel="stylesheet", href="/css/tables.css")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Add Produce - Karibu Groceries
+    link(rel="stylesheet", href="/css/manager.css")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
   body
     .dashboard-container
+      // Sidebar Navigation
       aside.sidebar
         .logo-container
           .logo-circle
-            img(src="/images/hand.jpg", alt="Company Logo")
-          h2.dashboard-title Procurement
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name Procurement
+        
         nav.sidebar-nav
           ul
-            //- li
-            //-   a(href="/manager")
-            //-     i.fas.fa-chart-bar
-            //-     |  Dashboard
-            li
-              a(href="/addproduce")
+            li.nav-item
+              a(href="/manager")
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
+              a(href="/addproduce").active
                 i.fas.fa-seedling
-                |  Add Produce
-            li
-              a(href="/addCredit")
-                i.fas.fa-plus-circle
-                |  Add Credit
-            li
+                span Add Produce
+            li.nav-item
               a(href="/addsale")
-                i.fas.fa-hand-holding-usd
-                |  Add sale
-            li
+                i.fas.fa-cash-register
+                span Record Sale
+            li.nav-item
               a(href="/salesTable")
                 i.fas.fa-table
-                |  Sales Table
-            li
-              a(href="/addproduce")
-                i.fas.fa-seedling
-                |  Produce Table
-            li
+                span Sales Table
+            li.nav-item
               a(href="/recordprocurement")
                 i.fas.fa-clipboard-list
-                |  Procurement List
-            li
+                span Procurement List
+            li.nav-item
+              a(href="/addCredit")
+                i.fas.fa-hand-holding-usd
+                span Add Credit
+            li.nav-item
               a(href="/creditTable")
                 i.fas.fa-credit-card
-                |  Credit Table
-            li
-              a(href="/land")
+                span Credit Records
+            li.nav-item.logout
+              a(href="/logout")
                 i.fas.fa-sign-out-alt
-                |  Logout
+                span Logout
+
+      // Main Content
       main.main-content
-        header
-          h1 Maganjo Procurement Dashboard
-        section.dashboard-content
-          h2 Produce Procurement Records
-          form#procurementForm(action='/addproduce', method="post", onsubmit="handleFormSubmit(event)")
-            .form-group
-              label(for="produceName") Name of Produce:
-              input#produceName(type="text", name="produceName")
-              .error-message#produceNameError
-            .form-group
-              label(for="produceType") Type of Produce:
-              input#produceType(type="text", name="produceType")
-              .error-message#produceTypeError
-            .form-group
-              label(for="date") Date of Procurement:
-              input#procurementDate(type="date", name="date")
-              .error-message#dateError
-            .form-group
-              label(for="time") Time of Produce Entry:
-              input#time(type="time", name="time")
-              .error-message#timeError
-            .form-group
-              label(for="tonnage") Tonnage in kgs:
-              input#tonnage(type="number", name="tonnage")
-              .error-message#tonnageError
-            .form-group
-              label(for="cost") Cost in UgX:
-              input#cost(type="number", name="cost")
-              .error-message#costError
-            .form-group
-              label(for="dealerName") Name of the Dealer:
-              input#dealerName(type="text", name="dealerName")
-              .error-message#dealerNameError
-            .form-group
-              label(for="contact") Dealer's Contact Number:
-              input#contact(type="contact", name="contact")
-              .error-message#contactError
-            .form-group
-              label(for="salePrice") Price to be Sold at:
-              input#sellingPrice(type="number", name="salePrice")
-              .error-message#salePriceError
-            button(type="submit") Record Procurement
-          #submissionMessage.success-message(style="display:none;")
-          #errorMessage.error-message(style="display:none;")
-          #procurementData
-        //- script(src="/js/procurement.js")
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 Record Produce Procurement
+            p.welcome-message Add new produce to inventory
+
+        // Success/Error Messages
+        if success
+          .alert.alert-success
+            i.fas.fa-check-circle
+            .alert-content
+              h4 Success!
+              p Produce recorded successfully.
+              a(href="/recordprocurement") View Procurement List
+
+        if error
+          .alert.alert-danger
+            i.fas.fa-exclamation-circle
+            .alert-content
+              h4 Error!
+              p= error
+
+        // Procurement Form
+        section.form-section
+          .form-card
+            .form-header
+              h2
+                i.fas.fa-seedling
+                | Produce Details
+            
+            form#procurementForm(action='/addproduce', method="POST")
+              .form-grid
+                // Produce Name
+                .form-group
+                  label(for='produceName') 
+                    i.fas.fa-leaf
+                    | Produce Name *
+                  select#produceName(name='produceName' required)
+                    option(value='') Select Produce
+                    option(value='Beans') Beans
+                    option(value='Grain Maize') Grain Maize
+                    option(value='Cow Peas') Cow Peas
+                    option(value='G-nuts') G-nuts
+                    option(value='Soybeans') Soybeans
+                  span.error-message#produceName-error
+
+                // Produce Type
+                .form-group
+                  label(for='produceType') 
+                    i.fas.fa-tag
+                    | Produce Type *
+                  select#produceType(name='produceType' required)
+                    option(value='') Select Type
+                    option(value='Dried') Dried
+                    option(value='Fresh') Fresh
+                    option(value='Roasted') Roasted
+                  span.error-message#produceType-error
+
+                // Tonnage
+                .form-group
+                  label(for='tonnage') 
+                    i.fas.fa-weight-hanging
+                    | Tonnage (kg) *
+                  input#tonnage(type='number' name='tonnage' min='1000' placeholder='Min 1000 kg (1 ton)' required)
+                  span.error-message#tonnage-error
+                  span.helper Minimum 1000kg (1 ton) as per business rules
+
+                // Cost
+                .form-group
+                  label(for='cost') 
+                    i.fas.fa-coins
+                    | Total Cost (UGX) *
+                  input#cost(type='number' name='cost' min='10000' placeholder='Enter total cost' required)
+                  span.error-message#cost-error
+
+                // Sale Price
+                .form-group
+                  label(for='salePrice') 
+                    i.fas.fa-tag
+                    | Selling Price per kg (UGX) *
+                  input#salePrice(type='number' name='salePrice' min='100' placeholder='Price per kg' required)
+                  span.error-message#salePrice-error
+
+                // Dealer Name
+                .form-group
+                  label(for='dealerName') 
+                    i.fas.fa-user
+                    | Dealer Name *
+                  input#dealerName(type='text' name='dealerName' minlength='2' placeholder='Enter dealer name' required)
+                  span.error-message#dealerName-error
+
+                // Contact
+                .form-group
+                  label(for='contact') 
+                    i.fas.fa-phone
+                    | Dealer Contact *
+                  input#contact(type='text' name='contact' placeholder='+256 7XX XXX XXX' required)
+                  span.error-message#contact-error
+                  span.helper Format: +256 or 0 followed by 9 digits
+
+                // Branch
+                .form-group
+                  label(for='branch') 
+                    i.fas.fa-map-marker-alt
+                    | Branch to Stock *
+                  select#branch(name='branch' required)
+                    option(value='') Select Branch
+                    option(value='Maganjo') Maganjo
+                    option(value='Matugga') Matugga
+                  span.error-message#branch-error
+
+                // Date
+                .form-group
+                  label(for='date') 
+                    i.fas.fa-calendar-alt
+                    | Date *
+                  input#date(type='date' name='date' required)
+                  span.error-message#date-error
+
+                // Time
+                .form-group
+                  label(for='time') 
+                    i.fas.fa-clock
+                    | Time *
+                  input#time(type='time' name='time' required)
+                  span.error-message#time-error
+
+              .form-actions
+                button.btn.btn-primary(type='submit')
+                  i.fas.fa-save
+                  | Record Procurement
+                button.btn.btn-secondary(type='reset')
+                  i.fas.fa-undo
+                  | Clear Form
+
+    // Footer
+    footer.footer
+      p © 2025 Karibu Groceries Limited. All rights reserved.
+
+    script.
+      // Set default date and time
+      document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+        
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('time').value = `${hours}:${minutes}`;
+      });
+
+      // Form validation
+      document.getElementById('procurementForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        // Validate produce name
+        const produceName = document.getElementById('produceName');
+        if (!produceName.value) {
+          document.getElementById('produceName-error').textContent = 'Please select a produce';
+          isValid = false;
+        }
+        
+        // Validate produce type
+        const produceType = document.getElementById('produceType');
+        if (!produceType.value) {
+          document.getElementById('produceType-error').textContent = 'Please select produce type';
+          isValid = false;
+        }
+        
+        // Validate tonnage (min 1000kg as per business rules)
+        const tonnage = document.getElementById('tonnage');
+        if (!tonnage.value || tonnage.value < 1000) {
+          document.getElementById('tonnage-error').textContent = 'Tonnage must be at least 1000 kg (1 ton)';
+          isValid = false;
+        }
+        
+        // Validate cost
+        const cost = document.getElementById('cost');
+        if (!cost.value || cost.value < 10000) {
+          document.getElementById('cost-error').textContent = 'Cost must be at least UGX 10,000';
+          isValid = false;
+        }
+        
+        // Validate sale price
+        const salePrice = document.getElementById('salePrice');
+        if (!salePrice.value || salePrice.value < 100) {
+          document.getElementById('salePrice-error').textContent = 'Sale price is required';
+          isValid = false;
+        }
+        
+        // Validate dealer name
+        const dealerName = document.getElementById('dealerName');
+        if (!dealerName.value || dealerName.value.length < 2) {
+          document.getElementById('dealerName-error').textContent = 'Dealer name must be at least 2 characters';
+          isValid = false;
+        }
+        
+        // Validate contact (Ugandan phone format)
+        const contact = document.getElementById('contact');
+        const phoneRegex = /^(\+256|0)[0-9]{9}$/;
+        if (!contact.value || !phoneRegex.test(contact.value.replace(/\s/g, ''))) {
+          document.getElementById('contact-error').textContent = 'Please enter a valid Ugandan phone number';
+          isValid = false;
+        }
+        
+        // Validate branch
+        const branch = document.getElementById('branch');
+        if (!branch.value) {
+          document.getElementById('branch-error').textContent = 'Please select a branch';
+          isValid = false;
+        }
+        
+        // Validate date
+        const date = document.getElementById('date');
+        if (!date.value) {
+          document.getElementById('date-error').textContent = 'Please select a date';
+          isValid = false;
+        }
+        
+        // Validate time
+        const time = document.getElementById('time');
+        if (!time.value) {
+          document.getElementById('time-error').textContent = 'Please select a time';
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });
