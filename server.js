@@ -1,4 +1,4 @@
-require('dotenv').config();
+/*  */require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -13,7 +13,8 @@ const sessionConfig = {
   cookie: {
     secure: process.env.NODE_ENV === 'production', // true in production (HTTPS)
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Allow cross-site in production
   }
 };
 
@@ -35,6 +36,11 @@ const salesAgentRoutes = require('./routes/salesAgentRoutes');
 // Express Application Setup
 const app = express();
 const PORT = process.env.PORT || 3600;
+
+// Trust proxy for Render deployment (must be set before other middleware)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
 // Configuration
 app.set('view engine', 'pug');
