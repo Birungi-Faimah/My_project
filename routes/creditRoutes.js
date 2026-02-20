@@ -119,4 +119,31 @@ router.get('/deleteCredit/:id', async (req, res) => {
   }
 });
 
+// CSV Export route for credits
+router.get('/exportCredits', async (req, res) => {
+  try {
+    const credits = await Credit.find().sort({ createdAt: -1 });
+    
+    // Create CSV header
+    const csvHeader = 'No,Buyer Name,NIN,Location,Contact,Produce Name,Produce Type,Tonnage (kg),Unit Price (UGX),Amount Due (UGX),Due Date,Sales Agent,Branch,Dispatch Date,Status\n';
+    
+    // Create CSV rows
+    const csvRows = credits.map((credit, index) => {
+      const dueDate = credit.dueDate ? new Date(credit.dueDate).toLocaleDateString() : 'N/A';
+      const dispatchDate = credit.dateOfDispatch ? new Date(credit.dateOfDispatch).toLocaleDateString() : 'N/A';
+      return `${index + 1},"${credit.buyerName}","${credit.nin || 'N/A'}","${credit.location || 'N/A'}","${credit.contact || 'N/A'}","${credit.produceName}","${credit.produceType || 'N/A'}",${credit.tonnage},${credit.unitPrice},${credit.amountDue},"${dueDate}","${credit.salesAgentName}","${credit.branch || 'N/A'}","${dispatchDate}","${credit.status || 'pending'}"`;
+    }).join('\n');
+    
+    const csv = csvHeader + csvRows;
+    
+    // Set headers for CSV download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="credit_records.csv"');
+    res.send(csv);
+  } catch (error) {
+    console.error('Error exporting credits:', error);
+    res.status(500).send('Error exporting credits');
+  }
+});
+
 module.exports = router;

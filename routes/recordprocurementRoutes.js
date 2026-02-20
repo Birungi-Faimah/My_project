@@ -131,4 +131,30 @@ router.post("/deleteProduce/:id", async (req, res) => {
     }
 });
 
+// CSV Export route for procurement
+router.get("/exportProcurement", async (req, res) => {
+    try {
+        const produces = await Produce.find().sort({ createdAt: -1 });
+        
+        // Create CSV header
+        const csvHeader = 'No,Produce Name,Produce Type,Tonnage (kg),Cost (UGX),Sale Price (UGX),Dealer Name,Contact,Branch,Date\n';
+        
+        // Create CSV rows
+        const csvRows = produces.map((produce, index) => {
+            const date = produce.producedateandtime ? new Date(produce.producedateandtime).toLocaleDateString() : 'N/A';
+            return `${index + 1},"${produce.produceName}","${produce.produceType || 'N/A'}",${produce.tonnage},${produce.cost},${produce.salePrice},"${produce.dealerName}","${produce.contact || 'N/A'}","${produce.branch || 'N/A'}","${date}"`;
+        }).join('\n');
+        
+        const csv = csvHeader + csvRows;
+        
+        // Set headers for CSV download
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="procurement_records.csv"');
+        res.send(csv);
+    } catch (error) {
+        console.error('Error exporting procurement:', error);
+        res.status(500).send('Error exporting procurement records');
+    }
+});
+
 module.exports = router;

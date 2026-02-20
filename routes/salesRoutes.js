@@ -82,7 +82,11 @@ router.get("/updateSale", async (req, res) => {
     if (!sale) {
       return res.status(404).send("Sale not found");
     }
-    res.render("updatesale", { sale });
+    res.render("updatesale", { 
+      sale,
+      success: req.query.success,
+      error: req.query.error 
+    });
   } catch (error) {
     console.error("Error finding sale:", error);
     res.redirect("/salesTable?error=Unable to find sale");
@@ -92,11 +96,32 @@ router.get("/updateSale", async (req, res) => {
 // POST: save updated form
 router.post("/updateSale", async (req, res) => {
   try {
-    await Sale.findByIdAndUpdate(req.query.id, req.body);
+    console.log("Update sale form data:", req.body);
+    
+    // Calculate unit price
+    const amountPaid = parseFloat(req.body.amountPaid) || 0;
+    const tonnageSold = parseFloat(req.body.tonnageSold) || 0;
+    const unitPrice = tonnageSold > 0 ? Math.round(amountPaid / tonnageSold) : 0;
+    
+    const updateData = {
+      produceName: req.body.produceName,
+      produceType: req.body.produceType,
+      tonnageSold: tonnageSold,
+      amountPaid: amountPaid,
+      unitPrice: unitPrice,
+      buyerName: req.body.buyerName,
+      salesAgentName: req.body.salesAgentName,
+      branch: req.body.branch,
+      saleDate: req.body.saleDate,
+      saleTime: req.body.saleTime
+    };
+    
+    await Sale.findByIdAndUpdate(req.query.id, updateData);
+    console.log("Sale updated:", updateData);
     res.redirect("/salesTable?success=true");
   } catch (error) {
     console.error("Error updating sale:", error);
-    res.redirect(`/updateSale?id=${req.query.id}&error=Update failed`);
+    res.redirect(`/updateSale?id=${req.query.id}&error=` + encodeURIComponent(error.message));
   }
 });
 
@@ -138,6 +163,32 @@ router.get('/api/sales', async (req, res) => {
     res.json(sales);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch sales' });
+  }
+});
+
+// CSV Export route for sales
+router.get('/exportSales', async (req, res) => {
+  try {
+    const sales = await Sale.find().sort({ createdAt: -1 });
+    
+    // Create CSV header
+    const csvHeader = 'No,Buyer Name,Produce Name,Produce Type,Tonnage (kg),Amount (UGX),Unit Price (UGX/kg),Sales Agent,Branch,Date,Time\n';
+    
+    // Create CSV rows
+    const csvRows = sales.map((sale, index) => {
+      const date = sale.saleDate ? new Date(sale.saleDate).toLocaleDateString() : 'N/A';
+      return `${index + 1},"${sale.buyerName}","${sale.produceName}","${sale.produceType || 'N/A'}",${sale.tonnageSold},${sale.amountPaid},${sale.unitPrice || 0},"${sale.salesAgentName}","${sale.branch || 'N/A'}","${date}","${sale.saleTime || 'N/A'}"`;
+    }).join('\n');
+    
+    const csv = csvHeader + csvRows;
+    
+    // Set headers for CSV download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="sales_records.csv"');
+    res.send(csv);
+  } catch (error) {
+    console.error('Error exporting sales:', error);
+    res.status(500).send('Error exporting sales');
   }
 });
 

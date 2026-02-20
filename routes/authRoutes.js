@@ -50,9 +50,7 @@ router.get("/login", (req, res) =>{
   res.render("login");
 });
 
-router.get("/salesAgentDash", requireRole('salesagent'), (req, res) =>{
-  res.render("SalesDash");
-});
+// Sales Agent Dashboard is now handled in salesAgentRoutes.js
 
 router.get("/addProduce", (req, res) =>{
   res.render("procurement");
@@ -61,19 +59,31 @@ router.get("/addProduce", (req, res) =>{
 router.post("/login", 
    passport.authenticate("local", {failureRedirect: "/login"}),
    (req,res) =>{
-   console.log(req.body);
-   req.session.user =req.user;
-   if(req.user.role ==="manager"){
-       res.redirect("/manager");
-   }
-   else if(req.user.role ==="salesagent"){
-       res.redirect("/salesAgentDash")
-   }
-   else if(req.user.role ==="director"){
-       res.redirect("/director");
-   }else{
-       res.send("You do not have any role in the system")
-   } 
+   console.log('=== Login Success ===');
+   console.log('User:', req.user ? { email: req.user.email, role: req.user.role } : 'no user');
+   console.log('Session ID:', req.sessionID);
+   
+   // Save the session before redirecting
+   req.session.save((err) => {
+     if (err) {
+       console.error('Session save error:', err);
+     }
+     
+     if(req.user.role === "manager"){
+         console.log('Redirecting to /manager');
+         return res.redirect("/manager");
+     }
+     else if(req.user.role === "salesagent"){
+         console.log('Redirecting to /salesAgentDash');
+         return res.redirect("/salesAgentDash");
+     }
+     else if(req.user.role === "director"){
+         console.log('Redirecting to /director');
+         return res.redirect("/director");
+     }else{
+         return res.send("You do not have any role in the system");
+     }
+   });
 });
 
 router.get("/logout", (req, res) => {

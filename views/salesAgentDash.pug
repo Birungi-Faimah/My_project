@@ -1,0 +1,236 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Sales Agent Dashboard - Karibu Groceries
+    link(rel="stylesheet", href="/css/manager.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
+  body
+    .dashboard-container
+      // Sidebar Navigation
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name Sales Agent
+        
+        nav.sidebar-nav
+          ul
+            li.nav-item
+              a(href="/salesAgentDash").active
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
+              a(href="/addsale")
+                i.fas.fa-cash-register
+                span Record Sale
+            li.nav-item
+              a(href="/addCredit")
+                i.fas.fa-hand-holding-usd
+                span Add Credit
+            li.nav-item
+              a(href="/salesTable")
+                i.fas.fa-table
+                span Sales Table
+            li.nav-item
+              a(href="/creditTable")
+                i.fas.fa-credit-card
+                span Credit Records
+            li.nav-item.logout
+              a(href="/logout")
+                i.fas.fa-sign-out-alt
+                span Logout
+
+      // Main Content
+      main.main-content
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 Sales Agent Dashboard
+            p.welcome-message Welcome back, #{user ? user.firstname : 'Agent'}! Here's your performance overview.
+
+        // Success/Error Messages
+        if success
+          .alert.alert-success
+            i.fas.fa-check-circle
+            .alert-content
+              h4 Success!
+              p Operation completed successfully.
+
+        if error
+          .alert.alert-danger
+            i.fas.fa-exclamation-circle
+            .alert-content
+              h4 Error!
+              p= error
+
+        // Statistics Cards
+        section.stats-section
+          .stats-grid
+            .stat-card.stat-primary
+              .stat-icon
+                i.fas.fa-shopping-cart
+              .stat-info
+                h3 #{stats.totalSales || 0}
+                p Total Sales Made
+              .stat-trend.up
+                i.fas.fa-arrow-up
+                span This Month
+
+            .stat-card.stat-success
+              .stat-icon
+                i.fas.fa-coins
+              .stat-info
+                h3 UGX #{stats.totalRevenue ? stats.totalRevenue.toLocaleString() : 0}
+                p Total Revenue
+              .stat-trend.up
+                i.fas.fa-arrow-up
+                span Collected
+
+            .stat-card.stat-info
+              .stat-icon
+                i.fas.fa-weight-hanging
+              .stat-info
+                h3 #{stats.totalTonnage ? stats.totalTonnage.toLocaleString() : 0} kg
+                p Total Tonnage Sold
+              .stat-trend
+                i.fas.fa-balance-scale
+                span Produce Sold
+
+            .stat-card.stat-warning
+              .stat-icon
+                i.fas.fa-hand-holding-usd
+              .stat-info
+                h3 #{stats.totalCredits || 0}
+                p Credit Records
+              .stat-trend
+                i.fas.fa-clock
+                span Pending: #{stats.pendingCredits || 0}
+
+        // Quick Actions
+        section.quick-actions-section
+          h2.section-title
+            i.fas.fa-bolt
+            | Quick Actions
+          .quick-actions-grid
+            a.quick-action-card(href="/addsale")
+              .action-icon
+                i.fas.fa-plus-circle
+              .action-info
+                h3 Record New Sale
+                p Add a new sales transaction
+            a.quick-action-card(href="/addCredit")
+              .action-icon
+                i.fas.fa-user-plus
+              .action-info
+                h3 Add Credit
+                p Record deferred payment
+            a.quick-action-card(href="/salesTable")
+              .action-icon
+                i.fas.fa-history
+              .action-info
+                h3 View Sales History
+                p See all your transactions
+            a.quick-action-card(href="/creditTable")
+              .action-icon
+                i.fas.fa-list-alt
+              .action-info
+                h3 Credit Records
+                p Manage credit payments
+
+        // Recent Activity
+        section.content-section
+          .content-card
+            .card-header
+              h2
+                i.fas.fa-clock
+                | Recent Sales
+              a.view-all-btn(href="/salesTable")
+                | View All
+                i.fas.fa-arrow-right
+            
+            .card-body
+              if recentSales && recentSales.length > 0
+                .table-responsive
+                  table.data-table
+                    thead
+                      tr
+                        th Buyer Name
+                        th Produce
+                        th Tonnage
+                        th Amount (UGX)
+                        th Date
+                        th Time
+                    tbody
+                      each sale in recentSales
+                        tr
+                          td 
+                            .buyer-info
+                              i.fas.fa-user
+                              | #{sale.buyerName}
+                          td #{sale.produceName}
+                          td #{sale.tonnageSold} kg
+                          td.amount UGX #{sale.amountPaid ? sale.amountPaid.toLocaleString() : 0}
+                          td #{sale.saleDate ? new Date(sale.saleDate).toLocaleDateString() : 'N/A'}
+                          td #{sale.saleTime || 'N/A'}
+              else
+                .empty-state
+                  i.fas.fa-inbox
+                  h3 No Recent Sales
+                  p Start by recording your first sale.
+                  a.add-btn(href="/addsale")
+                    i.fas.fa-plus
+                    | Record Sale
+
+        // Pending Credits Section
+        section.content-section
+          .content-card
+            .card-header
+              h2
+                i.fas.fa-exclamation-triangle
+                | Pending Credits
+              a.view-all-btn(href="/creditTable")
+                | View All
+                i.fas.fa-arrow-right
+            
+            .card-body
+              if pendingCredits && pendingCredits.length > 0
+                .table-responsive
+                  table.data-table
+                    thead
+                      tr
+                        th Buyer Name
+                        th Produce
+                        th Amount Due (UGX)
+                        th Due Date
+                        th Status
+                    tbody
+                      each credit in pendingCredits
+                        tr
+                          td 
+                            .buyer-info
+                              i.fas.fa-user
+                              | #{credit.buyerName}
+                          td #{credit.produceName}
+                          td.amount UGX #{credit.amountDue ? credit.amountDue.toLocaleString() : 0}
+                          td #{credit.dueDate ? new Date(credit.dueDate).toLocaleDateString() : 'N/A'}
+                          td 
+                            span.status-badge.pending Pending
+              else
+                .empty-state.small
+                  i.fas.fa-check-circle
+                  p No pending credits. Great job!
+
+    // Footer
+    footer.footer
+      p © 2025 Karibu Groceries Limited. All rights reserved.
+
+    script.
+      // Display current date/time
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('Sales Agent Dashboard loaded');
+      });

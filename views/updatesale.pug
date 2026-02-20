@@ -3,78 +3,275 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title Update Sale Record
-    link(rel="stylesheet", href="/css/dashboard.css")
-    link(rel="stylesheet", href="/css/forms.css")
-    link(rel="stylesheet", href="/css/tables.css")
+    title Edit Sale - Karibu Groceries
+    link(rel="stylesheet", href="/css/manager.css")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
   body
     .dashboard-container
+      // Sidebar Navigation
       aside.sidebar
         .logo-container
           .logo-circle
-            img(src="/images/hand.jpg", alt="Company Logo")
-          h2.dashboard-title Sales
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name Edit Sale
+        
         nav.sidebar-nav
           ul
-            li
-              a(href="/salesAgentDash")
-                i.fas.fa-chart-bar
-                |  Dashboard
-            li
+            li.nav-item
+              a(href="/manager")
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
+              a(href="/addproduce")
+                i.fas.fa-seedling
+                span Add Produce
+            li.nav-item
+              a(href="/addsale")
+                i.fas.fa-cash-register
+                span Record Sale
+            li.nav-item
               a(href="/salesTable")
                 i.fas.fa-table
-                |  Sales Table
-            li
-              a(href="/addsale")
-                i.fas.fa-chart-bar
-                |  Add sale 
-            li
-              a(href="/land")
+                span Sales Table
+            li.nav-item
+              a(href="/recordprocurement")
+                i.fas.fa-clipboard-list
+                span Procurement
+            li.nav-item.logout
+              a(href="/logout")
                 i.fas.fa-sign-out-alt
-                |  Logout
+                span Logout
+
+      // Main Content
       main.main-content
-        header
-          h1 Update Sale Record
-        section.dashboard-content
-          form#updateSaleForm(action=`/updateSale?id=${sale._id}`, method="post")
-            .form-group
-              label(for="produceName") Produce Name:
-              input#produceName(type="text", name="produceName", value=sale.produceName,)
-              .error-message#produceNameError
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 Edit Sale Record
+            p.welcome-message Update sale transaction details
+
+        // Success/Error Messages
+        if success
+          .alert.alert-success
+            i.fas.fa-check-circle
+            .alert-content
+              h4 Success!
+              p Sale updated successfully.
+              a(href="/salesTable") View Sales Table
+
+        if error
+          .alert.alert-danger
+            i.fas.fa-exclamation-circle
+            .alert-content
+              h4 Error!
+              p= error
+
+        // Edit Form
+        section.form-section
+          .form-card
+            .form-header
+              h2
+                i.fas.fa-edit
+                | Sale Details
             
-            .form-group
-              label(for="tonnageSold") Tonnage Sold (kgs):
-              input#tonnageSold(type="number", name="tonnageSold", value=sale.tonnageSold,)
-              .error-message#tonnageSoldError
-            
-            .form-group
-              label(for="amountPaid") Amount Paid (UGX):
-              input#amountPaid(type="number", name="amountPaid", value=sale.amountPaid,)
-              .error-message#amountPaidError
-            
-            .form-group
-              label(for="buyerName") Buyer Name:
-              input#buyerName(type="text", name="buyerName", value=sale.buyerName,)
-              .error-message#buyerNameError
-            
-            .form-group
-              label(for="slaesAgentName") Sales Agent Name:
-              input#slaesAgentName(type="text", name="slaesAgentName", value=sale.slaesAgentName,)
-              .error-message#slaesAgentNameError
-            
-            .form-group
-              label(for="saleDate") Sale Date:
-              input#saleDate(type="date", name="saleDate", value=sale.saleDate ? sale.saleDate.toISOString().split('T')[0] : '',)
-              .error-message#saleDateError
-            
-            .form-group
-              label(for="saleTime") Sale Time:
-              input#saleTime(type="time", name="saleTime", value=sale.saleTime,)
-              .error-message#saleTimeError
-            
-            .form-actions
-              button(type="submit") Update Sale
-              a.btn-cancel(href="/salesTable") Cancel 
+            form#updateSaleForm(action=`/updateSale?id=${sale._id}`, method="POST")
+              .form-grid
+                // Produce Name
+                .form-group
+                  label(for='produceName') 
+                    i.fas.fa-seedling
+                    | Produce Name *
+                  select#produceName(name='produceName' required)
+                    option(value='') Select Produce
+                    option(value='Beans' selected=sale.produceName === 'Beans') Beans
+                    option(value='Grain Maize' selected=sale.produceName === 'Grain Maize') Grain Maize
+                    option(value='Cow Peas' selected=sale.produceName === 'Cow Peas') Cow Peas
+                    option(value='G-nuts' selected=sale.produceName === 'G-nuts') G-nuts
+                    option(value='Soybeans' selected=sale.produceName === 'Soybeans') Soybeans
+                  span.error-message#produceName-error
+
+                // Produce Type
+                .form-group
+                  label(for='produceType') 
+                    i.fas.fa-tag
+                    | Produce Type *
+                  select#produceType(name='produceType' required)
+                    option(value='') Select Type
+                    option(value='Dried' selected=sale.produceType === 'Dried') Dried
+                    option(value='Fresh' selected=sale.produceType === 'Fresh') Fresh
+                    option(value='Roasted' selected=sale.produceType === 'Roasted') Roasted
+                  span.error-message#produceType-error
+
+                // Tonnage
+                .form-group
+                  label(for='tonnageSold') 
+                    i.fas.fa-weight-hanging
+                    | Tonnage (kg) *
+                  input#tonnageSold(type='number' name='tonnageSold' min='1' value=sale.tonnageSold required)
+                  span.error-message#tonnageSold-error
+
+                // Amount Paid
+                .form-group
+                  label(for='amountPaid') 
+                    i.fas.fa-coins
+                    | Amount Paid (UGX) *
+                  input#amountPaid(type='number' name='amountPaid' min='10000' value=sale.amountPaid required)
+                  span.error-message#amountPaid-error
+
+                // Unit Price (auto-calculated)
+                .form-group
+                  label(for='unitPrice') 
+                    i.fas.fa-tag
+                    | Unit Price (UGX/kg)
+                  input#unitPrice(type='text' name='unitPrice' readonly value=sale.unitPrice)
+                  span.helper Calculated from amount ÷ tonnage
+
+                // Buyer Name
+                .form-group
+                  label(for='buyerName') 
+                    i.fas.fa-user
+                    | Buyer's Name *
+                  input#buyerName(type='text' name='buyerName' minlength='2' value=sale.buyerName required)
+                  span.error-message#buyerName-error
+
+                // Sales Agent
+                .form-group
+                  label(for='salesAgentName') 
+                    i.fas.fa-user-tie
+                    | Sales Agent *
+                  input#salesAgentName(type='text' name='salesAgentName' minlength='2' value=sale.salesAgentName required)
+                  span.error-message#salesAgentName-error
+
+                // Branch
+                .form-group
+                  label(for='branch') 
+                    i.fas.fa-map-marker-alt
+                    | Branch *
+                  select#branch(name='branch' required)
+                    option(value='') Select Branch
+                    option(value='Maganjo' selected=sale.branch === 'Maganjo') Maganjo
+                    option(value='Matugga' selected=sale.branch === 'Matugga') Matugga
+                  span.error-message#branch-error
+
+                // Date
+                .form-group
+                  label(for='saleDate') 
+                    i.fas.fa-calendar-alt
+                    | Date *
+                  input#saleDate(type='date' name='saleDate' value=sale.saleDate ? sale.saleDate.toISOString().split('T')[0] : '' required)
+                  span.error-message#saleDate-error
+
+                // Time
+                .form-group
+                  label(for='saleTime') 
+                    i.fas.fa-clock
+                    | Time *
+                  input#saleTime(type='time' name='saleTime' value=sale.saleTime required)
+                  span.error-message#saleTime-error
+
+              .form-actions
+                button.btn.btn-primary(type='submit')
+                  i.fas.fa-save
+                  | Update Sale
+                a.btn.btn-secondary(href="/salesTable")
+                  i.fas.fa-times
+                  | Cancel
+
+    // Footer
+    footer.footer
+      p © 2025 Karibu Groceries Limited. All rights reserved.
+
+    script.
+      // Calculate unit price
+      document.getElementById('amountPaid').addEventListener('input', calculateUnitPrice);
+      document.getElementById('tonnageSold').addEventListener('input', calculateUnitPrice);
+
+      function calculateUnitPrice() {
+        const amount = parseFloat(document.getElementById('amountPaid').value) || 0;
+        const tonnage = parseFloat(document.getElementById('tonnageSold').value) || 0;
+        
+        if (amount > 0 && tonnage > 0) {
+          const unitPrice = Math.round(amount / tonnage);
+          document.getElementById('unitPrice').value = unitPrice.toLocaleString();
+        } else {
+          document.getElementById('unitPrice').value = '';
+        }
+      }
+
+      // Form validation
+      document.getElementById('updateSaleForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        // Validate produce name
+        const produceName = document.getElementById('produceName');
+        if (!produceName.value) {
+          document.getElementById('produceName-error').textContent = 'Please select a produce';
+          isValid = false;
+        }
+        
+        // Validate produce type
+        const produceType = document.getElementById('produceType');
+        if (!produceType.value) {
+          document.getElementById('produceType-error').textContent = 'Please select produce type';
+          isValid = false;
+        }
+        
+        // Validate tonnage
+        const tonnage = document.getElementById('tonnageSold');
+        if (!tonnage.value || tonnage.value < 1) {
+          document.getElementById('tonnageSold-error').textContent = 'Tonnage must be at least 1 kg';
+          isValid = false;
+        }
+        
+        // Validate amount
+        const amount = document.getElementById('amountPaid');
+        if (!amount.value || amount.value < 10000) {
+          document.getElementById('amountPaid-error').textContent = 'Amount must be at least UGX 10,000';
+          isValid = false;
+        }
+        
+        // Validate buyer name
+        const buyerName = document.getElementById('buyerName');
+        if (!buyerName.value || buyerName.value.length < 2) {
+          document.getElementById('buyerName-error').textContent = 'Buyer name must be at least 2 characters';
+          isValid = false;
+        }
+        
+        // Validate sales agent
+        const salesAgent = document.getElementById('salesAgentName');
+        if (!salesAgent.value || salesAgent.value.length < 2) {
+          document.getElementById('salesAgentName-error').textContent = 'Sales agent name is required';
+          isValid = false;
+        }
+        
+        // Validate branch
+        const branch = document.getElementById('branch');
+        if (!branch.value) {
+          document.getElementById('branch-error').textContent = 'Please select a branch';
+          isValid = false;
+        }
+        
+        // Validate date
+        const saleDate = document.getElementById('saleDate');
+        if (!saleDate.value) {
+          document.getElementById('saleDate-error').textContent = 'Please select a date';
+          isValid = false;
+        }
+        
+        // Validate time
+        const saleTime = document.getElementById('saleTime');
+        if (!saleTime.value) {
+          document.getElementById('saleTime-error').textContent = 'Please select a time';
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });

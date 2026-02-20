@@ -3,11 +3,19 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const expressSession = require('express-session')({
-  secret: process.env.SESSION_SECRET || 'secret',
+const expressSession = require('express-session');
+
+// Session configuration with proper cookie settings
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || 'karibu-groceries-secret-key-2025',
   resave: false,
   saveUninitialized: false,
-});
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+};
 
 // Import Models
 const Signup = require('./models/Signup');
@@ -22,6 +30,7 @@ const directorRoutes = require('./routes/directorRoutes');
 const landRoutes = require('./routes/landRoutes');
 const recordprocurementRoutes = require('./routes/recordprocurementRoutes');
 const salesRoutes = require('./routes/salesRoutes');
+const salesAgentRoutes = require('./routes/salesAgentRoutes');
 
 // Express Application Setup
 const app = express();
@@ -44,7 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public/img/uploads', express.static(path.join(__dirname, 'public/img/uploads')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(expressSession);
+app.use(expressSession(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -63,6 +72,7 @@ app.use('/', directorRoutes);
 app.use('/', landRoutes);
 app.use('/', salesRoutes);
 app.use('/', recordprocurementRoutes);
+app.use('/', salesAgentRoutes);
 
 // Server Startup
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
