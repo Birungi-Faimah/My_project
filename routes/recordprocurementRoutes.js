@@ -71,7 +71,11 @@ router.get("/editProduce/:id", async (req, res) => {
     try {
         const produce = await Produce.findById(req.params.id);
         if (!produce) return res.status(404).send("Produce not found");
-        res.render("editproduce", { produce });
+        res.render("editproduce", { 
+            produce,
+            success: req.query.success,
+            error: req.query.error 
+        });
     } catch (error) {
         console.error("Error finding produce:", error);
         res.redirect("/recordprocurement?error=Unable to find produce");
@@ -81,21 +85,26 @@ router.get("/editProduce/:id", async (req, res) => {
 // POST: Save the edited produce
 router.post("/editProduce/:id", async (req, res) => {
     try {
+        console.log("Edit form data:", req.body);
+        
         const updateData = {
             produceName: req.body.produceName,
             produceType: req.body.produceType,
-            producedateandtime: new Date(`${req.body.procurementDate}T${req.body.procurementTime}`),
-            producecost: req.body.cost,
+            producedateandtime: new Date(`${req.body.date}T${req.body.time}`),
+            cost: parseFloat(req.body.cost) || 0,
             dealerName: req.body.dealerName,
             contact: req.body.contact,
-            sellingprice: req.body.salePrice,
-            tonnage: req.body.tonnage
+            branch: req.body.branch,
+            salePrice: parseFloat(req.body.salePrice) || 0,
+            tonnage: parseFloat(req.body.tonnage) || 0
         };
+        
         await Produce.findByIdAndUpdate(req.params.id, updateData);
+        console.log("Produce updated:", updateData);
         res.redirect("/recordprocurement?success=true");
     } catch (error) {
         console.error("Error updating produce:", error);
-        res.redirect(`/editProduce/${req.params.id}?error=Update failed`);
+        res.redirect(`/editProduce/${req.params.id}?error=` + encodeURIComponent(error.message));
     }
 });
 
