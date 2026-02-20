@@ -51,25 +51,25 @@ html(lang="en")
               .card-icon
                 i.fas.fa-weight-hanging
               .card-content
-                h3 #{companyStats.totalProcured ? companyStats.totalProcured.toLocaleString() : 0}
+                h3 #{companyStats && companyStats.totalProcured ? companyStats.totalProcured.toLocaleString() : 0}
                 p Total Procured (kg)
             .overview-card.total-sales
               .card-icon
                 i.fas.fa-coins
               .card-content
-                h3 UGX #{companyStats.totalSalesAmount ? companyStats.totalSalesAmount.toLocaleString() : 0}
+                h3 UGX #{companyStats && companyStats.totalSalesAmount ? companyStats.totalSalesAmount.toLocaleString() : 0}
                 p Total Revenue
             .overview-card.total-credit
               .card-icon
                 i.fas.fa-hand-holding-usd
               .card-content
-                h3 UGX #{companyStats.totalCredit ? companyStats.totalCredit.toLocaleString() : 0}
+                h3 UGX #{companyStats && companyStats.totalCredit ? companyStats.totalCredit.toLocaleString() : 0}
                 p Total Credit
             .overview-card.current-stock
               .card-icon
                 i.fas.fa-warehouse
               .card-content
-                h3 #{companyStats.totalProcured - companyStats.totalSold}
+                h3 #{companyStats ? (companyStats.totalProcured || 0) - (companyStats.totalSold || 0) : 0}
                 p Current Stock (kg)
 
         // Branch Comparison Section

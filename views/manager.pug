@@ -87,37 +87,37 @@ html(lang="en")
               .stat-icon
                 i.fas.fa-weight-hanging
               .stat-info
-                h3 #{stats.totalProcured ? stats.totalProcured.toLocaleString() : 0}
+                h3 #{stats && stats.totalProcured ? stats.totalProcured.toLocaleString() : 0}
                 p Total Procured (kg)
             .stat-card.stat-success
               .stat-icon
                 i.fas.fa-chart-line
               .stat-info
-                h3 UGX #{stats.totalSales ? stats.totalSales.toLocaleString() : 0}
+                h3 UGX #{stats && stats.totalSales ? stats.totalSales.toLocaleString() : 0}
                 p Total Sales
             .stat-card.stat-warning
               .stat-icon
                 i.fas.fa-hand-holding-usd
               .stat-info
-                h3 UGX #{stats.totalCredit ? stats.totalCredit.toLocaleString() : 0}
+                h3 UGX #{stats && stats.totalCredit ? stats.totalCredit.toLocaleString() : 0}
                 p Total Credit
             .stat-card.stat-info
               .stat-icon
                 i.fas.fa-warehouse
               .stat-info
-                h3 #{stats.currentStock ? stats.currentStock.toLocaleString() : 0}
+                h3 #{stats && stats.currentStock ? stats.currentStock.toLocaleString() : 0}
                 p Current Stock (kg)
             .stat-card.stat-purple
               .stat-icon
                 i.fas.fa-shopping-cart
               .stat-info
-                h3 #{stats.totalSalesCount || 0}
+                h3 #{stats && stats.totalSalesCount ? stats.totalSalesCount : 0}
                 p Total Sales
             .stat-card.stat-orange
               .stat-icon
                 i.fas.fa-clock
               .stat-info
-                h3 #{stats.pendingCredits || 0}
+                h3 #{stats && stats.pendingCredits ? stats.pendingCredits : 0}
                 p Pending Credits
 
         // Main Content Grid

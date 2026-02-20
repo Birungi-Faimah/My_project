@@ -87,29 +87,7 @@ router.get("/logout", (req, res) => {
   }
 });
 
-router.get("/manager", requireRole('manager'), (req, res) =>{
-  res.render("manager");
-});
-
-router.get("/director", requireRole('director'), (req, res) =>{
-  res.render("director");
-});
-
-//    router.get('/salesagent', (req, res) => {
-//     res.render('saleagentmaga');  // Make sure 'saleagentmaga.pug' exists in the 'views' folder
-//   });
-  
-//   router.get('/manager', (req, res) => {
-//     res.render('manager');  // Make sure 'managerdashboard.pug' exists in the 'views' folder
-//   });
-
-// router.get('/saleagentmatu', async (req, res) => {
-//   try {
-//     const sales = await Sale.find({ sales_agent: 'Matuga' }).sort({ createdAt: -1 });
-//     res.render('saleagentmatu', { sales });
-//   } catch (error) {
-//     res.status(500).send('Error fetching sales for Matuga');
-//   }
-// });
+// Note: /manager and /director routes are handled in their respective route files
+// managerRoutes.js and directorRoutes.js
 
 module.exports = router;
