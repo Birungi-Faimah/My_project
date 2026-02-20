@@ -870,3 +870,197 @@ body {
   background: var(--danger-color);
   color: white;
 }
+
+/* ==========================================
+   FORM STYLES
+   ========================================== */
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.form-header {
+  padding: 16px 24px;
+  background: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.form-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-header h2 i {
+  color: var(--primary-color);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-group label i {
+  color: var(--primary-color);
+  font-size: 0.813rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.938rem;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(26, 67, 64, 0.1);
+}
+
+.form-group input[readonly] {
+  background: var(--secondary-color);
+  cursor: not-allowed;
+}
+
+.form-group .error-message {
+  font-size: 0.75rem;
+  color: var(--danger-color);
+  min-height: 18px;
+}
+
+.form-group .helper {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  background: var(--secondary-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.938rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+}
+
+.btn-secondary {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: #dee2e6;
+}
+
+/* Alert Messages */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  animation: slideIn 0.3s ease;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border-left: 4px solid var(--accent-color);
+}
+
+.alert-success i {
+  color: var(--accent-color);
+}
+
+.alert-success .alert-content h4 {
+  color: #155724;
+}
+
+.alert-success .alert-content p {
+  color: #155724;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  border-left: 4px solid var(--danger-color);
+}
+
+.alert-danger i {
+  color: var(--danger-color);
+}
+
+.alert-danger .alert-content h4 {
+  color: #721c24;
+}
+
+.alert-danger .alert-content p {
+  color: #721c24;
+}
+
+.alert i {
+  font-size: 1.25rem;
+}
+
+.alert-content h4 {
+  font-size: 0.938rem;
+  margin-bottom: 4px;
+}
+
+.alert-content p {
+  font-size: 0.875rem;
+}
+
+.alert-content a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}

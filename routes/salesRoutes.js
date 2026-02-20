@@ -15,12 +15,21 @@ router.get("/addSale", (req, res) => {
 router.post("/addSale", async (req, res) => {
   try {
     console.log("Form data received:", req.body);
+    
+    // Calculate unit price
+    const amountPaid = parseFloat(req.body.amountPaid) || 0;
+    const tonnageSold = parseFloat(req.body.tonnageSold) || 0;
+    const unitPrice = tonnageSold > 0 ? Math.round(amountPaid / tonnageSold) : 0;
+    
     const sale = new Sale({
       produceName: req.body.produceName,
-      tonnageSold: req.body.tonnageSold,
-      amountPaid: req.body.amountPaid,
+      produceType: req.body.produceType,
+      tonnageSold: tonnageSold,
+      amountPaid: amountPaid,
+      unitPrice: unitPrice,
       buyerName: req.body.buyerName,
-      slaesAgentName: req.body.salesAgentName,
+      salesAgentName: req.body.salesAgentName,
+      branch: req.body.branch,
       saleDate: req.body.saleDate,
       saleTime: req.body.saleTime
     });
