@@ -5,16 +5,19 @@ const passPortLocalMongoose=require('passport-local-mongoose');
 const SignupSchema = new mongoose.Schema({
     firstname: {
         type: String,
-        trim: true
+        trim: true,
+        required: true
     },
     lastname: {
         type: String,
-        trim: true
+        trim: true,
+        required: true
     },
     email: {
         type: String,
         trim: true,
-        unique: true
+        unique: true,
+        required: true
     },
     // Note: password fields removed - passport-local-mongoose handles passwords automatically
     // It creates 'hash' and 'salt' fields internally
@@ -26,7 +29,12 @@ const SignupSchema = new mongoose.Schema({
     },
     branch: {
         type: String,
-        trim: true
+        trim: true,
+        enum: ['Maganjo', 'Matugga', 'Head Office'], // KGL branches
+        required: function() {
+            // Branch is required for managers and sales agents, not for director
+            return this.role === 'manager' || this.role === 'salesagent';
+        }
     }
 });
  

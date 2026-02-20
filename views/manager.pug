@@ -3,96 +3,221 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title Manager Dashboard
-    link(rel="stylesheet", href="/css/dashboard.css")
-    link(rel="stylesheet", href="/css/forms.css")
-    link(rel="stylesheet", href="/css/tables.css")
+    title Manager Dashboard - Karibu Groceries
+    link(rel="stylesheet", href="/css/manager.css")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
   body
     .dashboard-container
+      // Sidebar Navigation
       aside.sidebar
         .logo-container
           .logo-circle
-            img(src="/images/hand.jpg", alt="Company Logo")
-          h2.dashboard-title Manager's Dashboard
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name #{branch} Branch
+        
         nav.sidebar-nav
           ul
-            li
-              a(href="/manager")
-                i.fas.fa-chart-bar
-                |  Dashboard
-            li
+            li.nav-item
+              a(href="/manager").active
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
               a(href="/addproduce")
                 i.fas.fa-seedling
-                |  Add Produce
-            li
+                span Add Produce
+            li.nav-item
               a(href="/addsale")
-                i.fas.fa-hand-holding-usd
-                |  Add sale 
-            li
+                i.fas.fa-cash-register
+                span Record Sale
+            li.nav-item
               a(href="/addCredit")
-                i.fas.fa-plus-circle
-                |  Add Credit
-            li
+                i.fas.fa-hand-holding-usd
+                span Add Credit
+            li.nav-item
               a(href="/salesTable")
                 i.fas.fa-table
-                |  Sales Table
-            li
-              a(href="/addproduce")
-                i.fas.fa-seedling
-                |  Produce Table
-            li
+                span Sales Records
+            li.nav-item
               a(href="/recordprocurement")
                 i.fas.fa-clipboard-list
-                |  Procurement List
-            li
+                span Procurement
+            li.nav-item
               a(href="/creditTable")
                 i.fas.fa-credit-card
-                |  Credit Table
-            li
-              a(href="/land")
+                span Credit Records
+            li.nav-item.logout
+              a(href="/logout")
                 i.fas.fa-sign-out-alt
-                |  Logout
+                span Logout
+
+      // Main Content
       main.main-content
-        header
-          h1 Manager Dashboard
-        section.dashboard-cards
-          .card
-            h2 Total Procured
-            p#totalProcured #{totalProcured ? totalProcured.toLocaleString('en-UG') : 0} kgs
-          .card
-            h2 Number of Procurements
-            p#numProcurements #{produces && produces.length ? produces.length : 0}
-        section.recent-procurements
-          h2 Recent Procurements
-          table
-            thead
-              tr
-                th Produce Name
-                th Type
-                th Date
-                th Tonnage (kgs)
-                th Cost (UGX)
-                th Dealer Name
-                th Contact
-                th Branch
-            tbody#recentProcurementsTable
-              if produces && produces.length
-                each produce in produces.slice(0, 10)
-                  tr
-                    td #{produce.produceName}
-                    td #{produce.produceType}
-                    td #{produce.producedateandtime ? produce.producedateandtime.toLocaleDateString() : ''}
-                    td #{produce.tonnage}
-                    td #{produce.producecost}
-                    td #{produce.dealerName}
-                    td #{produce.contact}
-                    td #{produce.branch}
-              else
-                tr
-                  td(colspan="8") No procurements found.
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 Manager Dashboard
+            p.welcome-message Welcome back, #{user ? user.firstname : 'Manager'}
+          .header-right
+            .date-time
+              i.fas.fa-calendar-alt
+              span#currentDate
+            .notifications
+              button.notification-btn
+                i.fas.fa-bell
+                if lowStockItems && lowStockItems.length > 0
+                  span.badge #{lowStockItems.length}
+
+        // Low Stock Alert
+        if lowStockItems && lowStockItems.length > 0
+          section.alert-section
+            .alert.alert-warning
+              i.fas.fa-exclamation-triangle
+              .alert-content
+                h4 Low Stock Alert!
+                p #{lowStockItems.length} item(s) are running low on stock. 
+                  a(href="#lowStock") View details
+
+        // Statistics Cards
+        section.stats-section
+          .stats-grid
+            .stat-card.stat-primary
+              .stat-icon
+                i.fas.fa-weight-hanging
+              .stat-info
+                h3 #{stats.totalProcured ? stats.totalProcured.toLocaleString() : 0}
+                p Total Procured (kg)
+            .stat-card.stat-success
+              .stat-icon
+                i.fas.fa-chart-line
+              .stat-info
+                h3 UGX #{stats.totalSales ? stats.totalSales.toLocaleString() : 0}
+                p Total Sales
+            .stat-card.stat-warning
+              .stat-icon
+                i.fas.fa-hand-holding-usd
+              .stat-info
+                h3 UGX #{stats.totalCredit ? stats.totalCredit.toLocaleString() : 0}
+                p Total Credit
+            .stat-card.stat-info
+              .stat-icon
+                i.fas.fa-warehouse
+              .stat-info
+                h3 #{stats.currentStock ? stats.currentStock.toLocaleString() : 0}
+                p Current Stock (kg)
+            .stat-card.stat-purple
+              .stat-icon
+                i.fas.fa-shopping-cart
+              .stat-info
+                h3 #{stats.totalSalesCount || 0}
+                p Total Sales
+            .stat-card.stat-orange
+              .stat-icon
+                i.fas.fa-clock
+              .stat-info
+                h3 #{stats.pendingCredits || 0}
+                p Pending Credits
+
+        // Main Content Grid
+        section.content-section
+          .content-grid
+            // Recent Sales
+            .content-card
+              .card-header
+                h2
+                  i.fas.fa-receipt
+                  | Recent Sales
+                a.view-all(href="/salesTable") View All
+              .card-body
+                if sales && sales.length > 0
+                  table.data-table
+                    thead
+                      tr
+                        th Produce
+                        th Tonnage
+                        th Amount (UGX)
+                        th Buyer
+                        th Date
+                    tbody
+                      each sale in sales
+                        tr
+                          td #{sale.produceName}
+                          td #{sale.tonnageSold} kg
+                          td #{sale.amountPaid ? sale.amountPaid.toLocaleString() : 0}
+                          td #{sale.buyerName}
+                          td #{sale.saleDate ? sale.saleDate.toLocaleDateString() : 'N/A'}
+                else
+                  .empty-state
+                    i.fas.fa-inbox
+                    p No sales recorded yet
+
+            // Low Stock Items
+            .content-card#lowStock
+              .card-header
+                h2
+                  i.fas.fa-exclamation-circle
+                  | Low Stock Items
+                span.badge-badge #{lowStockItems ? lowStockItems.length : 0}
+              .card-body
+                if lowStockItems && lowStockItems.length > 0
+                  table.data-table
+                    thead
+                      tr
+                        th Produce
+                        th Type
+                        th Stock (kg)
+                        th Status
+                    tbody
+                      each item in lowStockItems
+                        tr
+                          td #{item.produceName}
+                          td #{item.produceType}
+                          td.low-stock #{item.tonnage}
+                          td
+                            span.status-badge.status-critical Critical
+                else
+                  .empty-state
+                    i.fas.fa-check-circle
+                    p All stock levels are healthy
+
+            // Recent Credits
+            .content-card
+              .card-header
+                h2
+                  i.fas.fa-credit-card
+                  | Recent Credits
+                a.view-all(href="/creditTable") View All
+              .card-body
+                if credits && credits.length > 0
+                  table.data-table
+                    thead
+                      tr
+                        th Buyer
+                        th Amount Due
+                        th Due Date
+                        th Status
+                    tbody
+                      each credit in credits
+                        tr
+                          td #{credit.buyerName}
+                          td UGX #{credit.amountDue ? credit.amountDue.toLocaleString() : 0}
+                          td #{credit.dueDate ? credit.dueDate.toLocaleDateString() : 'N/A'}
+                          td
+                            span.status-badge(class="status-#{credit.status || 'pending'}") #{credit.status || 'pending'}
+                else
+                  .empty-state
+                    i.fas.fa-inbox
+                    p No credit records
+
+    // Footer
     footer.footer
-      p © 2025 Karibu groceries limited. All rights reserved.
-      p Developed by Birungi Faimah Khan 
+      p © 2025 Karibu Groceries Limited. All rights reserved.
+      p Developed by Birungi Faimah Khan
+
+    script.
+      // Display current date
+      const dateElement = document.getElementById('currentDate');
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      dateElement.textContent = new Date().toLocaleDateString('en-UG', options);

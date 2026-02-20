@@ -1,37 +1,62 @@
 const mongoose = require('mongoose');
 const ProduceSchema = new mongoose.Schema({
-    produceName:{
-        type:String,
-        trim:true
+    produceName: {
+        type: String,
+        trim: true,
+        required: true
     },
-    produceType:{
-        type:String,
+    produceType: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 2
     },
-    producedateandtime:{
-        type:Date,
-        trim:true
+    producedateandtime: {
+        type: Date,
+        default: Date.now
     },
-    cost:{
-        type:Number,
-        trim:true
+    tonnage: {
+        type: Number,
+        required: true,
+        min: 0
     },
-    dealerName:{
-        type:String,
-        trim:true
+    cost: {
+        type: Number,
+        required: true,
+        min: 0
     },
-    branch:{
-        type:String,
-        trim:true
+    dealerName: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 2
     },
-    contact:{
-        type:Number,
-        trim:true
+    branch: {
+        type: String,
+        trim: true,
+        required: true,
+        enum: ['Maganjo', 'Matugga'] // KGL's two branches
     },
-    salePrice:{
-        type:Number,
-        trim:true
+    contact: {
+        type: String,
+        trim: true,
+        required: true,
+        validate: {
+            validator: function(v) {
+                // Ugandan phone number format
+                return /^(\+256|0)[0-9]{9}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid Ugandan phone number!`
+        }
+    },
+    salePrice: {
+        type: Number,
+        required: true,
+        min: 0
     }
+}, { timestamps: true });
 
+// Index for faster queries
+ProduceSchema.index({ produceName: 1, branch: 1 });
 
-});
-module.exports = mongoose.model('Produce', ProduceSchema)
+module.exports = mongoose.model('Produce', ProduceSchema);

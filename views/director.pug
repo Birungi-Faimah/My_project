@@ -3,90 +3,137 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title Manager Dashboard
+    title Director Dashboard - Karibu Groceries
     link(rel="stylesheet", href="/css/dashboard.css")
-    link(rel="stylesheet", href="/css/forms.css")
-    link(rel="stylesheet", href="/css/tables.css")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
   body
     .dashboard-container
+      // Sidebar Navigation
       aside.sidebar
         .logo-container
           .logo-circle
-            img(src="/images/hand.jpg", alt="Company Logo")
-          h2.dashboard-title Mr Orban's Dashboard
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name Director
+        
         nav.sidebar-nav
           ul
-            li
-              a(href="/dashboard")
-                i.fas.fa-chart-bar
-                |  Dashboard
-            li
-              a(href="/salesTable")
-                i.fas.fa-table
-                |  Sales Table
-            li
-              a(href="/addproduce")
-                i.fas.fa-apple-alt
-                |  Produce Table
-            li
-              a(href="/recordprocurement")
-                i.fas.fa-clipboard-list
-                |  Procurement List
-            li
-              a(href="/creditTable")
-                i.fas.fa-credit-card
-                |  Credit Table
-            li
-              a(href="/land")
+            li.nav-item
+              a(href="/director").active
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
+              a(href="/logout")
                 i.fas.fa-sign-out-alt
-                |  Logout
+                span Logout
+
+      // Main Content
       main.main-content
-        header
-          button#sidebar-toggle.fas.fa-bars
-          h1 Dashboard
-        section.dashboard-cards
-          .card
-            h2 Total Procured
-            p#totalProcured #{totalProcured ? totalProcured.toLocaleString('en-UG') : 0} kgs
-          .card
-            h2 Number of Procurements
-            p#numProcurements #{produces && produces.length ? produces.length : 0}
-        section.recent-procurements
-          h2 Recent Procurements
-          table
-            thead
-              tr
-                th Produce Name
-                th Type
-                th Date
-                th Tonnage (kgs)
-                th Cost (UGX)
-                th Dealer Name
-                th Contact
-                th Branch
-            tbody#recentProcurementsTable
-              if produces && produces.length
-                each produce in produces.slice(0, 10)
-                  tr
-                    td #{produce.produceName}
-                    td #{produce.produceType}
-                    td #{produce.producedateandtime ? produce.producedateandtime.toLocaleDateString() : ''}
-                    td #{produce.tonnage}
-                    td #{produce.producecost}
-                    td #{produce.dealerName}
-                    td #{produce.contact}
-                    td #{produce.branch}
-              else
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 Director Dashboard
+            p.welcome-message Welcome, Mr. Orban
+          .header-right
+            .date-time
+              i.fas.fa-calendar-alt
+              span#currentDate
+
+        // Company Overview Section
+        section.company-overview
+          h2.section-title
+            i.fas.fa-building
+            | Company Overview
+          .overview-cards
+            .overview-card.total-procured
+              .card-icon
+                i.fas.fa-weight-hanging
+              .card-content
+                h3 #{companyStats.totalProcured ? companyStats.totalProcured.toLocaleString() : 0}
+                p Total Procured (kg)
+            .overview-card.total-sales
+              .card-icon
+                i.fas.fa-coins
+              .card-content
+                h3 UGX #{companyStats.totalSalesAmount ? companyStats.totalSalesAmount.toLocaleString() : 0}
+                p Total Revenue
+            .overview-card.total-credit
+              .card-icon
+                i.fas.fa-hand-holding-usd
+              .card-content
+                h3 UGX #{companyStats.totalCredit ? companyStats.totalCredit.toLocaleString() : 0}
+                p Total Credit
+            .overview-card.current-stock
+              .card-icon
+                i.fas.fa-warehouse
+              .card-content
+                h3 #{companyStats.totalProcured - companyStats.totalSold}
+                p Current Stock (kg)
+
+        // Branch Comparison Section
+        section.branch-comparison
+          h2.section-title
+            i.fas.fa-code-branch
+            | Branch Performance
+          .branch-grid
+            each branchData, branchName in branchStats
+              .branch-card
+                .branch-header
+                  h3 
+                    i.fas.fa-map-marker-alt
+                    | #{branchName} Branch
+                .branch-stats
+                  .stat-row
+                    span.label Total Procured
+                    span.value #{branchData.totalProcured.toLocaleString()} kg
+                  .stat-row
+                    span.label Current Stock
+                    span.value #{branchData.currentStock.toLocaleString()} kg
+                  .stat-row
+                    span.label Total Revenue
+                    span.value UGX #{branchData.totalSalesAmount.toLocaleString()}
+                  .stat-row
+                    span.label Sales Count
+                    span.value #{branchData.totalSalesCount}
+                  .stat-row
+                    span.label Credit Amount
+                    span.value.warning UGX #{branchData.totalCredit.toLocaleString()}
+                  .stat-row
+                    span.label Pending Credits
+                    span.value #{branchData.pendingCredits}
+
+        // Produce Performance Section
+        section.produce-performance
+          h2.section-title
+            i.fas.fa-seedling
+            | Produce Performance
+          .produce-table-container
+            table.produce-table
+              thead
                 tr
-                  td(colspan="8") No procurements found.
+                  th Produce Type
+                  th Total Procured (kg)
+                  th Total Sold (kg)
+                  th Revenue (UGX)
+              tbody
+                each stats, type in produceStats
+                  tr
+                    td
+                      i.fas.fa-leaf
+                      | #{type}
+                    td #{stats.procured.toLocaleString()}
+                    td #{stats.sold.toLocaleString()}
+                    td UGX #{stats.revenue.toLocaleString()}
+
+    // Footer
     footer.footer
-      p © 2025 Karibu groceries limited. All rights reserved.
+      p © 2025 Karibu Groceries Limited. All rights reserved.
       p Developed by Birungi Faimah Khan
+
     script.
-      document.getElementById('sidebar-toggle').addEventListener('click', function() {
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.classList.toggle('active');
-      });
+      // Display current date
+      const dateElement = document.getElementById('currentDate');
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      dateElement.textContent = new Date().toLocaleDateString('en-UG', options);

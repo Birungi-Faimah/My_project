@@ -1,65 +1,96 @@
 const mongoose = require('mongoose');
 const CreditSchema = new mongoose.Schema({
-  NameofBuyer: {
+  buyerName: {
     type: String,
     trim: true,
     required: true,
+    minlength: 2
   },
-  NIN: {
+  nin: {
     type: String,
     trim: true,
     required: true,
+    validate: {
+      validator: function(v) {
+        // Ugandan NIN format (approximately)
+        return /^[A-Z]{2}[0-9]{10}[A-Z]{2}$/.test(v);
+      },
+      message: props => `${props.value} is not a valid National ID number!`
+    }
   },
   location: {
     type: String,
     trim: true,
     required: true,
+    minlength: 2
   },
-  contant: {
-    type: Number,
-    trim: true,
-    required: true,
-  },
-  AmountDue: {
-    type: Number,
-    trim: true,
-    required: true,
-    min: 0,
-  },
-  agentName: {
+  contact: {
     type: String,
     trim: true,
     required: true,
+    validate: {
+      validator: function(v) {
+        return /^(\+256|0)[0-9]{9}$/.test(v);
+      },
+      message: props => `${props.value} is not a valid Ugandan phone number!`
+    }
   },
-  DueDate: {
-    type: Date,
+  amountDue: {
+    type: Number,
     required: true,
+    min: 10000
+  },
+  salesAgentName: {
+    type: String,
+    trim: true,
+    required: true,
+    minlength: 2
+  },
+  branch: {
+    type: String,
+    trim: true,
+    required: true,
+    enum: ['Maganjo', 'Matugga']
+  },
+  dueDate: {
+    type: Date,
+    required: true
   },
   produceName: {
     type: String,
     trim: true,
     required: true,
+    minlength: 2
   },
-  TypeofProduce: {
+  produceType: {
     type: String,
     trim: true,
-    required: true,
+    required: true
   },
-  Tonnage: {
+  tonnage: {
     type: Number,
-    trim: true,
     required: true,
-    min: 0,
+    min: 1
   },
-  cost: {
+  unitPrice: {
     type: Number,
-    trim: true,
-    min: 0,
+    required: true,
+    min: 0
   },
-  DateofDispatch: {
+  dateOfDispatch: {
     type: Date,
     required: true,
+    default: Date.now
   },
-});
+  status: {
+    type: String,
+    enum: ['pending', 'paid', 'overdue'],
+    default: 'pending'
+  }
+}, { timestamps: true });
+
+// Index for faster queries
+CreditSchema.index({ branch: 1, status: 1 });
+CreditSchema.index({ dueDate: 1 });
 
 module.exports = mongoose.model('Credit', CreditSchema);
