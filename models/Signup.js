@@ -16,14 +16,8 @@ const SignupSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    password: {
-        type: String,
-        trim: true
-    },
-    Confirmpassword: {
-        type: String,
-        trim: true
-    },
+    // Note: password fields removed - passport-local-mongoose handles passwords automatically
+    // It creates 'hash' and 'salt' fields internally
     role: {
         type: String,
         trim: true,

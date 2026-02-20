@@ -19,25 +19,30 @@ router.get("/Signup", (req, res) =>{
     
  router.post("/SignUp", async (req, res) => {
   try {
-    const user = new Signup(req.body);
     let existingUser = await Signup.findOne({ 
       email: req.body.email
      });
 
     if (existingUser) {
       return res.status(400).send("Not Registered, email already exists");
-    } else {
-      await Signup.register(user, req.body.password, (error) => {
-        if(error) {
-          throw error;
-        }
-        res.redirect("/login");
-      });
     }
-    console.log(user);
+
+    // Create user object without password (passport-local-mongoose handles it)
+    const user = new Signup({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      role: req.body.role,
+      branch: req.body.branch
+    });
+
+    // Use promise-based register (no callback with await)
+    await Signup.register(user, req.body.password);
+    console.log('User registered successfully:', user.email);
+    res.redirect("/login");
   } catch (error){
+    console.log('Registration error:', error);
     res.status(400).render("signup");
-    console.log(error);
   } 
 });
 
