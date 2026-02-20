@@ -4,27 +4,59 @@ const Credit = require('../models/Credit');
 
 // Render the form
 router.get('/addCredit', (req, res) => {
-  res.render('credit', { credit: null, success: false });
+  res.render('credit', { credit: null, success: req.query.success, error: req.query.error });
 });
 
 // Handle form submission
 router.post('/addCredit', async (req, res) => {
   try {
-    console.log('Received form data:', req.body);
-    const credit = new Credit(req.body);
+    console.log('Received credit form data:', req.body);
+    
+    const credit = new Credit({
+      buyerName: req.body.buyerName,
+      nin: req.body.nin,
+      location: req.body.location,
+      contact: req.body.contact,
+      produceName: req.body.produceName,
+      produceType: req.body.produceType,
+      tonnage: parseFloat(req.body.tonnage) || 0,
+      unitPrice: parseFloat(req.body.unitPrice) || 0,
+      amountDue: parseFloat(req.body.amountDue) || 0,
+      dueDate: req.body.dueDate,
+      salesAgentName: req.body.salesAgentName,
+      branch: req.body.branch,
+      dateOfDispatch: req.body.dateOfDispatch,
+      status: req.body.status || 'pending'
+    });
+    
     await credit.save();
+    console.log('Credit saved:', credit);
     res.redirect('/creditTable?success=true');
   } catch (error) {
     console.error('Error saving credit:', error);
-    res.status(500).render('credit', { credit: req.body, error: 'Failed to save credit', success: false });
+    res.redirect('/addCredit?error=' + encodeURIComponent(error.message));
   }
 });
 
 // Render the table
 router.get('/creditTable', async (req, res) => {
   try {
-    const credits = await Credit.find();
-    res.render('creditT', { credits, success: req.query.success === 'true' });
+    const credits = await Credit.find().sort({ createdAt: -1 });
+    
+    // Calculate statistics
+    const totalCredits = credits.length;
+    const totalAmount = credits.reduce((sum, c) => sum + (c.amountDue || 0), 0);
+    const pendingCredits = credits.filter(c => c.status === 'pending').length;
+    const paidCredits = credits.filter(c => c.status === 'paid').length;
+    
+    res.render('creditT', { 
+      credits, 
+      totalCredits,
+      totalAmount,
+      pendingCredits,
+      paidCredits,
+      success: req.query.success === 'true' 
+    });
   } catch (error) {
     console.error('Error fetching credits:', error);
     res.status(500).send('Error fetching credits');
@@ -38,7 +70,7 @@ router.get('/editCredit/:id', async (req, res) => {
     if (!credit) {
       return res.status(404).send('Credit entry not found');
     }
-    res.render('credit', { credit, success: false });
+    res.render('credit', { credit, success: req.query.success, error: req.query.error });
   } catch (error) {
     console.error('Error fetching credit:', error);
     res.status(404).send('Credit entry not found');
@@ -48,11 +80,31 @@ router.get('/editCredit/:id', async (req, res) => {
 // Update credit entry
 router.post('/editCredit/:id', async (req, res) => {
   try {
-    await Credit.findByIdAndUpdate(req.params.id, req.body, { runValidators: true });
+    console.log('Edit credit form data:', req.body);
+    
+    const updateData = {
+      buyerName: req.body.buyerName,
+      nin: req.body.nin,
+      location: req.body.location,
+      contact: req.body.contact,
+      produceName: req.body.produceName,
+      produceType: req.body.produceType,
+      tonnage: parseFloat(req.body.tonnage) || 0,
+      unitPrice: parseFloat(req.body.unitPrice) || 0,
+      amountDue: parseFloat(req.body.amountDue) || 0,
+      dueDate: req.body.dueDate,
+      salesAgentName: req.body.salesAgentName,
+      branch: req.body.branch,
+      dateOfDispatch: req.body.dateOfDispatch,
+      status: req.body.status || 'pending'
+    };
+    
+    await Credit.findByIdAndUpdate(req.params.id, updateData, { runValidators: true });
+    console.log('Credit updated:', updateData);
     res.redirect('/creditTable?success=true');
   } catch (error) {
     console.error('Error updating credit:', error);
-    res.status(500).render('credit', { credit: req.body, error: 'Failed to update credit', success: false });
+    res.redirect(`/editCredit/${req.params.id}?error=` + encodeURIComponent(error.message));
   }
 });
 

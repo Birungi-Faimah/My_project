@@ -1,137 +1,358 @@
-meta(charset="UTF-8")
-meta(name="viewport", content="width=device-width, initial-scale=1")
-title Trusted Buyer Credit Form
-link(rel="stylesheet", href="/css/dashboard.css")
-link(rel="stylesheet", href="/css/forms.css")
-link(rel="stylesheet", href="/css/tables.css")
-link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
-link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
-
-body
-  .dashboard-container
-    aside.sidebar
-      .logo-container
-        .logo-circle
-          img(src="/images/hand.jpg", alt="Company Logo")
-        h2.dashboard-title Credit
-      nav.sidebar-nav
-        ul
-          li
-            a(href="/addproduce")
-              i.fas.fa-seedling
-              | &nbsp;Add Produce
-          li
-            a(href="/addCredit")
-              i.fas.fa-plus-circle
-              | &nbsp;Add Credit
-          li
-            a(href="/salesTable")
-              i.fas.fa-table
-              | &nbsp;Sales Table
-          li
-            a(href="/addproduce")
-              i.fas.fa-seedling
-              | &nbsp;Produce Table 
-          li
-            a(href="/addSale")
-              i.fas.fa-hand-holding-usd
-              | &nbsp;Add Sale           
-          li
-            a(href="/recordprocurement")
-              i.fas.fa-clipboard-list
-              | &nbsp;Procurement List
-          li
-            a(href="/creditTable")
-              i.fas.fa-credit-card
-              | &nbsp;Credit Table   
-          li
-            a(href="/land")
-              i.fas.fa-sign-out-alt
-              | &nbsp;Logout
-    main.main-content
-      .container
-        h2 #{credit ? 'Edit Credit Entry' : 'Trusted Buyer Credit Form'}
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Trusted Buyer Credit - Karibu Groceries
+    link(rel="stylesheet", href="/css/manager.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap")
+  
+  body
+    .dashboard-container
+      // Sidebar Navigation
+      aside.sidebar
+        .logo-container
+          .logo-circle
+            img(src="/images/hand.jpg", alt="KGL Logo")
+          h2.dashboard-title Karibu Groceries
+          p.branch-name Credit
         
+        nav.sidebar-nav
+          ul
+            li.nav-item
+              a(href="/manager")
+                i.fas.fa-chart-pie
+                span Dashboard
+            li.nav-item
+              a(href="/addproduce")
+                i.fas.fa-seedling
+                span Add Produce
+            li.nav-item
+              a(href="/addsale")
+                i.fas.fa-cash-register
+                span Record Sale
+            li.nav-item
+              a(href="/salesTable")
+                i.fas.fa-table
+                span Sales Table
+            li.nav-item
+              a(href="/recordprocurement")
+                i.fas.fa-clipboard-list
+                span Procurement
+            li.nav-item
+              a(href="/addCredit").active
+                i.fas.fa-hand-holding-usd
+                span Add Credit
+            li.nav-item
+              a(href="/creditTable")
+                i.fas.fa-credit-card
+                span Credit Records
+            li.nav-item.logout
+              a(href="/logout")
+                i.fas.fa-sign-out-alt
+                span Logout
+
+      // Main Content
+      main.main-content
+        // Header
+        header.dashboard-header
+          .header-left
+            h1 #{credit ? 'Edit Credit Entry' : 'Trusted Buyer Credit Form'}
+            p.welcome-message Record produce sold on credit/deferred payment
+
+        // Success/Error Messages
         if success
-          .success-message
+          .alert.alert-success
             i.fas.fa-check-circle
-            | Successfully submitted!
+            .alert-content
+              h4 Success!
+              p Credit record saved successfully.
+              a(href="/creditTable") View Credit Table
+
+        if error
+          .alert.alert-danger
+            i.fas.fa-exclamation-circle
+            .alert-content
+              h4 Error!
+              p= error
+
+        // Credit Form
+        section.form-section
+          .form-card
+            .form-header
+              h2
+                i.fas.fa-user-check
+                | Buyer Information
+            
+            form#creditForm(action=credit ? `/editCredit/${credit._id}` : '/addCredit', method="POST")
+              // Buyer Details Section
+              .form-section-title
+                h3 Buyer Details
+              
+              .form-grid
+                // Buyer Name
+                .form-group
+                  label(for='buyerName') 
+                    i.fas.fa-user
+                    | Buyer Name *
+                  input#buyerName(type='text' name='buyerName' minlength='2' value=credit ? credit.buyerName : '' placeholder='Enter buyer full name' required)
+                  span.error-message#buyerName-error
+
+                // National ID (NIN)
+                .form-group
+                  label(for='nin') 
+                    i.fas.fa-id-card
+                    | National ID (NIN) *
+                  input#nin(type='text' name='nin' value=credit ? credit.nin : '' placeholder='e.g., CM123456789AB' required)
+                  span.error-message#nin-error
+                  span.helper Format: 2 letters + 10 digits + 2 letters
+
+                // Location
+                .form-group
+                  label(for='location') 
+                    i.fas.fa-map-marker-alt
+                    | Location *
+                  input#location(type='text' name='location' minlength='2' value=credit ? credit.location : '' placeholder='Enter buyer location' required)
+                  span.error-message#location-error
+
+                // Contact
+                .form-group
+                  label(for='contact') 
+                    i.fas.fa-phone
+                    | Phone Number *
+                  input#contact(type='text' name='contact' value=credit ? credit.contact : '' placeholder='+256 7XX XXX XXX' required)
+                  span.error-message#contact-error
+                  span.helper Format: +256 or 0 followed by 9 digits
+
+              // Produce Details Section
+              .form-section-title
+                h3 Produce Details
+
+              .form-grid
+                // Produce Name
+                .form-group
+                  label(for='produceName') 
+                    i.fas.fa-seedling
+                    | Produce Name *
+                  select#produceName(name='produceName' required)
+                    option(value='') Select Produce
+                    option(value='Beans' selected=credit && credit.produceName === 'Beans') Beans
+                    option(value='Grain Maize' selected=credit && credit.produceName === 'Grain Maize') Grain Maize
+                    option(value='Cow Peas' selected=credit && credit.produceName === 'Cow Peas') Cow Peas
+                    option(value='G-nuts' selected=credit && credit.produceName === 'G-nuts') G-nuts
+                    option(value='Soybeans' selected=credit && credit.produceName === 'Soybeans') Soybeans
+                  span.error-message#produceName-error
+
+                // Produce Type
+                .form-group
+                  label(for='produceType') 
+                    i.fas.fa-tag
+                    | Produce Type *
+                  select#produceType(name='produceType' required)
+                    option(value='') Select Type
+                    option(value='Dried' selected=credit && credit.produceType === 'Dried') Dried
+                    option(value='Fresh' selected=credit && credit.produceType === 'Fresh') Fresh
+                    option(value='Roasted' selected=credit && credit.produceType === 'Roasted') Roasted
+                  span.error-message#produceType-error
+
+                // Tonnage
+                .form-group
+                  label(for='tonnage') 
+                    i.fas.fa-weight-hanging
+                    | Tonnage (kg) *
+                  input#tonnage(type='number' name='tonnage' min='1' value=credit ? credit.tonnage : '' placeholder='Enter weight in kg' required)
+                  span.error-message#tonnage-error
+
+                // Unit Price
+                .form-group
+                  label(for='unitPrice') 
+                    i.fas.fa-tag
+                    | Unit Price (UGX/kg) *
+                  input#unitPrice(type='number' name='unitPrice' min='100' value=credit ? credit.unitPrice : '' placeholder='Price per kg' required)
+                  span.error-message#unitPrice-error
+
+              // Payment Details Section
+              .form-section-title
+                h3 Payment Details
+
+              .form-grid
+                // Amount Due
+                .form-group
+                  label(for='amountDue') 
+                    i.fas.fa-coins
+                    | Amount Due (UGX) *
+                  input#amountDue(type='number' name='amountDue' min='10000' value=credit ? credit.amountDue : '' placeholder='Total amount owed' required)
+                  span.error-message#amountDue-error
+
+                // Due Date
+                .form-group
+                  label(for='dueDate') 
+                    i.fas.fa-calendar-check
+                    | Due Date *
+                  input#dueDate(type='date' name='dueDate' value=credit && credit.dueDate ? new Date(credit.dueDate).toISOString().split('T')[0] : '' required)
+                  span.error-message#dueDate-error
+
+                // Sales Agent
+                .form-group
+                  label(for='salesAgentName') 
+                    i.fas.fa-user-tie
+                    | Sales Agent *
+                  input#salesAgentName(type='text' name='salesAgentName' minlength='2' value=credit ? credit.salesAgentName : '' placeholder='Agent name' required)
+                  span.error-message#salesAgentName-error
+
+                // Branch
+                .form-group
+                  label(for='branch') 
+                    i.fas.fa-map-marker-alt
+                    | Branch *
+                  select#branch(name='branch' required)
+                    option(value='') Select Branch
+                    option(value='Maganjo' selected=credit && credit.branch === 'Maganjo') Maganjo
+                    option(value='Matugga' selected=credit && credit.branch === 'Matugga') Matugga
+                  span.error-message#branch-error
+
+                // Date of Dispatch
+                .form-group
+                  label(for='dateOfDispatch') 
+                    i.fas.fa-truck
+                    | Date of Dispatch *
+                  input#dateOfDispatch(type='date' name='dateOfDispatch' value=credit && credit.dateOfDispatch ? new Date(credit.dateOfDispatch).toISOString().split('T')[0] : '' required)
+                  span.error-message#dateOfDispatch-error
+
+                // Status
+                .form-group
+                  label(for='status') 
+                    i.fas.fa-info-circle
+                    | Status
+                  select#status(name='status')
+                    option(value='pending' selected=!credit || credit.status === 'pending') Pending
+                    option(value='paid' selected=credit && credit.status === 'paid') Paid
+                    option(value='overdue' selected=credit && credit.status === 'overdue') Overdue
+                  span.helper Payment status of this credit
+
+              .form-actions
+                button.btn.btn-primary(type='submit')
+                  i.fas.fa-save
+                  | #{credit ? 'Update Record' : 'Record Credit'}
+                a.btn.btn-secondary(href="/creditTable")
+                  i.fas.fa-times
+                  | Cancel
+
+    // Footer
+    footer.footer
+      p © 2025 Karibu Groceries Limited. All rights reserved.
+
+    script.
+      // Set default dates
+      document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        if (!document.getElementById('dateOfDispatch').value) {
+          document.getElementById('dateOfDispatch').value = today;
+        }
+      });
+
+      // Form validation
+      document.getElementById('creditForm').addEventListener('submit', function(e) {
+        let isValid = true;
         
-        form#creditForm(action=credit ? `/editCredit/${credit._id}` : '/addCredit', method="post")
-          .form-grid
-            .form-group
-              label(for="NameofBuyer") Buyer Name:
-              input(type="text", name="NameofBuyer", id="NameofBuyer", value=credit ? credit.NameofBuyer : '')
-              span.error-message#NameofBuyerError
-
-            .form-group
-              label(for="NIN") National ID:
-              input(type="text", name="NIN", id="NIN", value=credit ? credit.NIN : '')
-              span.error-message#NINError
-
-            .form-group
-              label(for="location") Location:
-              input(type="text", name="location", id="location", value=credit ? credit.location : '')
-              span.error-message#locationError
-
-            .form-group
-              label(for="contant") Phone:
-              input(type="tel", name="contant", id="contant", value=credit ? credit.contant : '')
-              span.error-message#contantError
-
-            .form-group
-              label(for="AmountDue") Amount (UGX):
-              input(type="number", name="AmountDue", id="AmountDue", value=credit ? credit.AmountDue : '')
-              span.error-message#AmountDueError
-
-            .form-group
-              label(for="agentName") Agent:
-              input(type="text", name="agentName", id="agentName", value=credit ? credit.agentName : '')
-              span.error-message#agentNameError
-
-            .form-group
-              label(for="DueDate") Due Date:
-              input(
-                type="date",
-                name="DueDate",
-                id="DueDate",
-                value=credit && credit.DueDate ? new Date(credit.DueDate).toISOString().split('T')[0] : ''
-              )
-              span.error-message#DueDateError
-
-            .form-group
-              label(for="produceName") Produce:
-              input(type="text", name="produceName", id="produceName", value=credit ? credit.produceName : '')
-              span.error-message#produceNameError
-
-            .form-group
-              label(for="TypeofProduce") Type:
-              input(type="text", name="TypeofProduce", id="TypeofProduce", value=credit ? credit.TypeofProduce : '')
-              span.error-message#TypeofProduceError
-
-            .form-group
-              label(for="Tonnage") Tonnage:
-              input(type="number", name="Tonnage", id="Tonnage", value=credit ? credit.Tonnage : '')
-              span.error-message#TonnageError
-
-            .form-group
-              label(for="cost") Price (UGX):
-              input(type="number", name="cost", id="cost", value=credit ? credit.cost : '')
-              span.error-message#costError
-
-            .form-group
-              label(for="DateofDispatch") Dispatch:
-              input(
-                type="date",
-                name="DateofDispatch",
-                id="DateofDispatch",
-                value=credit && credit.DateofDispatch ? new Date(credit.DateofDispatch).toISOString().split('T')[0] : ''
-              )
-              span.error-message#DateofDispatchError
-
-          .button-container
-            button(type="submit", id="submitBtn")
-              i.fas.fa-paper-plane
-              | #{credit ? 'Update' : 'Submit'}
-
-  script(src="/js/credit.js")
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        
+        // Validate buyer name
+        const buyerName = document.getElementById('buyerName');
+        if (!buyerName.value || buyerName.value.length < 2) {
+          document.getElementById('buyerName-error').textContent = 'Buyer name must be at least 2 characters';
+          isValid = false;
+        }
+        
+        // Validate NIN (Ugandan format)
+        const nin = document.getElementById('nin');
+        const ninRegex = /^[A-Z]{2}[0-9]{10}[A-Z]{2}$/i;
+        if (!nin.value || !ninRegex.test(nin.value)) {
+          document.getElementById('nin-error').textContent = 'Please enter a valid NIN (e.g., CM1234567890AB)';
+          isValid = false;
+        }
+        
+        // Validate location
+        const location = document.getElementById('location');
+        if (!location.value || location.value.length < 2) {
+          document.getElementById('location-error').textContent = 'Location must be at least 2 characters';
+          isValid = false;
+        }
+        
+        // Validate contact (Ugandan phone)
+        const contact = document.getElementById('contact');
+        const phoneRegex = /^(\+256|0)[0-9]{9}$/;
+        if (!contact.value || !phoneRegex.test(contact.value.replace(/\s/g, ''))) {
+          document.getElementById('contact-error').textContent = 'Please enter a valid Ugandan phone number';
+          isValid = false;
+        }
+        
+        // Validate produce name
+        const produceName = document.getElementById('produceName');
+        if (!produceName.value) {
+          document.getElementById('produceName-error').textContent = 'Please select a produce';
+          isValid = false;
+        }
+        
+        // Validate produce type
+        const produceType = document.getElementById('produceType');
+        if (!produceType.value) {
+          document.getElementById('produceType-error').textContent = 'Please select produce type';
+          isValid = false;
+        }
+        
+        // Validate tonnage
+        const tonnage = document.getElementById('tonnage');
+        if (!tonnage.value || tonnage.value < 1) {
+          document.getElementById('tonnage-error').textContent = 'Tonnage must be at least 1 kg';
+          isValid = false;
+        }
+        
+        // Validate unit price
+        const unitPrice = document.getElementById('unitPrice');
+        if (!unitPrice.value || unitPrice.value < 100) {
+          document.getElementById('unitPrice-error').textContent = 'Unit price is required';
+          isValid = false;
+        }
+        
+        // Validate amount due
+        const amountDue = document.getElementById('amountDue');
+        if (!amountDue.value || amountDue.value < 10000) {
+          document.getElementById('amountDue-error').textContent = 'Amount must be at least UGX 10,000';
+          isValid = false;
+        }
+        
+        // Validate due date
+        const dueDate = document.getElementById('dueDate');
+        if (!dueDate.value) {
+          document.getElementById('dueDate-error').textContent = 'Please select a due date';
+          isValid = false;
+        }
+        
+        // Validate sales agent
+        const salesAgentName = document.getElementById('salesAgentName');
+        if (!salesAgentName.value || salesAgentName.value.length < 2) {
+          document.getElementById('salesAgentName-error').textContent = 'Sales agent name is required';
+          isValid = false;
+        }
+        
+        // Validate branch
+        const branch = document.getElementById('branch');
+        if (!branch.value) {
+          document.getElementById('branch-error').textContent = 'Please select a branch';
+          isValid = false;
+        }
+        
+        // Validate date of dispatch
+        const dateOfDispatch = document.getElementById('dateOfDispatch');
+        if (!dateOfDispatch.value) {
+          document.getElementById('dateOfDispatch-error').textContent = 'Please select dispatch date';
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          e.preventDefault();
+        }
+      });
