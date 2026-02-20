@@ -38,8 +38,32 @@ router.post("/addproduce", async (req, res) => {
 
 // GET: Render procurement table
 router.get("/recordprocurement", async (req, res) => {
-    const produces = await Produce.find();
-    res.render('recordT', { produces });
+    try {
+        const produces = await Produce.find().sort({ createdAt: -1 });
+        
+        // Calculate statistics
+        const totalProcurements = produces.length;
+        const totalTonnage = produces.reduce((sum, p) => sum + (p.tonnage || 0), 0);
+        const totalCost = produces.reduce((sum, p) => sum + (p.cost || 0), 0);
+        
+        res.render('recordT', { 
+            produces, 
+            totalProcurements, 
+            totalTonnage, 
+            totalCost,
+            success: req.query.success,
+            error: req.query.error 
+        });
+    } catch (error) {
+        console.error("Error fetching produces:", error);
+        res.render('recordT', { 
+            produces: [], 
+            totalProcurements: 0, 
+            totalTonnage: 0, 
+            totalCost: 0,
+            error: "Unable to fetch procurement records" 
+        });
+    }
 });
 
 // GET: Render the edit form
