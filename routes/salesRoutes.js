@@ -39,15 +39,28 @@ router.post("/addSale", async (req, res) => {
 router.get("/salesTable", async (req, res) => {
   try {
     const sales = await Sale.find().sort({ createdAt: -1 });
+    
+    // Calculate statistics
+    const totalSales = sales.length;
+    const totalRevenue = sales.reduce((sum, s) => sum + (s.amountPaid || 0), 0);
+    const totalTonnage = sales.reduce((sum, s) => sum + (s.tonnageSold || 0), 0);
+    
     res.render("salesTable", {
       sales,
+      totalSales,
+      totalRevenue,
+      totalTonnage,
       success: req.query.success,
       error: req.query.error
     });
   } catch (error) {
     console.error("Error fetching sales:", error);
     res.status(400).render("salesTable", { 
-      error: "Unable to find sales in the database" 
+      error: "Unable to find sales in the database",
+      sales: [],
+      totalSales: 0,
+      totalRevenue: 0,
+      totalTonnage: 0
     });
   }
 });
