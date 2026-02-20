@@ -120,6 +120,37 @@ html(lang="en")
                 h3 #{stats && stats.pendingCredits ? stats.pendingCredits : 0}
                 p Pending Credits
 
+        // Quick Actions Section
+        section.quick-actions-section
+          h2.section-title
+            i.fas.fa-bolt
+            | Quick Actions
+          .quick-actions-grid
+            a.quick-action-card(href="/addproduce")
+              .action-icon.green
+                i.fas.fa-seedling
+              .action-info
+                h3 Add Produce
+                p Record new procurement
+            a.quick-action-card(href="/addsale")
+              .action-icon.blue
+                i.fas.fa-cash-register
+              .action-info
+                h3 Record Sale
+                p Add a new sales transaction
+            a.quick-action-card(href="/addCredit")
+              .action-icon.orange
+                i.fas.fa-hand-holding-usd
+              .action-info
+                h3 Add Credit
+                p Record deferred payment
+            a.quick-action-card(href="/salesTable")
+              .action-icon.purple
+                i.fas.fa-chart-line
+              .action-info
+                h3 View Reports
+                p Sales and procurement data
+
         // Main Content Grid
         section.content-section
           .content-grid

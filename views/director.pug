@@ -72,6 +72,37 @@ html(lang="en")
                 h3 #{companyStats ? (companyStats.totalProcured || 0) - (companyStats.totalSold || 0) : 0}
                 p Current Stock (kg)
 
+        // Quick Actions Section
+        section.quick-actions-section
+          h2.section-title
+            i.fas.fa-bolt
+            | Quick Actions
+          .quick-actions-grid
+            a.quick-action-card(href="/salesTable")
+              .action-icon.blue
+                i.fas.fa-chart-line
+              .action-info
+                h3 View Sales
+                p All sales transactions
+            a.quick-action-card(href="/creditTable")
+              .action-icon.orange
+                i.fas.fa-hand-holding-usd
+              .action-info
+                h3 Credit Records
+                p View all credit payments
+            a.quick-action-card(href="/recordprocurement")
+              .action-icon.green
+                i.fas.fa-clipboard-list
+              .action-info
+                h3 Procurement
+                p View procurement records
+            a.quick-action-card(href="/exportCompany")
+              .action-icon.purple
+                i.fas.fa-download
+              .action-info
+                h3 Export Report
+                p Download company data
+
         // Branch Comparison Section
         section.branch-comparison
           h2.section-title
