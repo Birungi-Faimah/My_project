@@ -11,7 +11,7 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true if using HTTPS
+    secure: process.env.NODE_ENV === 'production', // true in production (HTTPS)
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
@@ -40,13 +40,18 @@ const PORT = process.env.PORT || 3600;
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// Database Connection
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// Database Connection with better error handling
+const dbUrl = process.env.DATABASE || process.env.MONGODB_URI;
+if (!dbUrl) {
+  console.error('ERROR: No database connection string found in environment variables');
+}
+
+mongoose.connect(dbUrl)
   .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit if cannot connect to database
+  });
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
@@ -73,6 +78,12 @@ app.use('/', landRoutes);
 app.use('/', salesRoutes);
 app.use('/', recordprocurementRoutes);
 app.use('/', salesAgentRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Server Error:', err);
+  res.status(500).send('Internal Server Error - Please try again later');
+});
 
 // Server Startup
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
